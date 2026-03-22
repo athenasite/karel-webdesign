@@ -106,13 +106,13 @@ function App() {
           <NavBtn id="todo" label="Roadmap" icon="🗺️" active={currentView === 'todo'} onClick={() => setCurrentView('todo')} />
           <NavBtn id="settings" label="Settings" icon="⚙️" active={currentView === 'settings'} onClick={() => setCurrentView('settings')} />
 
-          <div className="mt-6 pt-2 border-t border-athena-border/30">
+          <div className="mt-6 pt-2 border-t border-athena-border/30 space-y-0.5">
              <p className="text-[8px] font-black text-slate-600 uppercase tracking-widest px-3 mb-2">Snelle Tools</p>
-             <ActionBtn label="DOCK" icon="⚓" onClick={() => startTool('Dock', 'http://localhost:5002')} />
-             <ActionBtn label="HEALTH" icon="🏥" onClick={() => window.open('/portfolio-status.html', '_blank')} />
-             <ActionBtn label="ANALYTICS" icon="📈" onClick={() => window.open('/conversion-analytics.html', '_blank')} />
-             <ActionBtn label="REVIEW" icon="⚖️" onClick={() => window.open('http://localhost:5001/reviewer.html', '_blank')} />
-             <ActionBtn label="LAYOUT" icon="🎨" onClick={() => startTool('Layout Editor', 'http://localhost:5003')} />
+             <NavBtn label="Athena Dock" icon="⚓" onClick={() => startTool('Dock', 'http://localhost:5002')} />
+             <NavBtn label="Portfolio Health" icon="🏥" onClick={() => window.open('/portfolio-status.html', '_blank')} />
+             <NavBtn label="Analytics" icon="📈" onClick={() => window.open('/conversion-analytics.html', '_blank')} />
+             <NavBtn label="Live Reviewer" icon="⚖️" onClick={() => window.open('http://localhost:5001/reviewer.html', '_blank')} />
+             <NavBtn label="Layout Editor" icon="🎨" onClick={() => startTool('Layout Editor', 'http://localhost:5003')} />
           </div>
         </nav>
 
@@ -279,17 +279,6 @@ function NavBtn({ label, icon, active, onClick }) {
   )
 }
 
-function ActionBtn({ label, icon, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-athena-accent transition-colors group"
-    >
-      <span className="text-xs opacity-50 group-hover:opacity-100">{icon}</span>
-      <span className="text-[11px] font-black uppercase tracking-tighter">{label}</span>
-    </button>
-  )
-}
 
 function StatBox({ label, value, color = "text-white" }) {
   return (
