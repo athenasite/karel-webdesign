@@ -46,7 +46,7 @@
     "title": "Ons Team",
     "subtitle": "De makers van jouw stijl",
     "visible": true,
-    "padding": 40
+    "padding": 8
   },
   {
     "id": "tarieven",
@@ -60,7 +60,8 @@
     "title": "Wat klanten zeggen",
     "subtitle": "Echte ervaringen",
     "visible": true,
-    "padding": 40
+    "padding": 0,
+    "list_gap": 20
   },
   {
     "id": "aveda",

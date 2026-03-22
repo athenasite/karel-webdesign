@@ -141,7 +141,14 @@ const Section = ({ data }) => {
 
         const bgClass = idx % 2 === 1 ? 'bg-black/5 dark:bg-white/5' : 'bg-transparent';
         const visibilityClass = !isVisible ? 'opacity-40 grayscale-[50%]' : '';
-        const paddingVal = sectionMeta.padding !== undefined ? sectionMeta.padding : 32;
+        
+        // v8.9 Global Spacing & Inheritance
+        const globalPadding = data.style_config?.global_padding !== undefined ? data.style_config.global_padding : 32;
+        const useCustom = sectionMeta.use_custom_padding === true;
+        const paddingValue = useCustom ? (sectionMeta.padding !== undefined ? sectionMeta.padding : 32) : globalPadding;
+        
+        // v8.9 List Gap
+        const listGap = sectionMeta.list_gap !== undefined ? sectionMeta.list_gap : 96;
 
         // SPECIAL CASE: DIENSTEN TARIEVEN (Gegroepeerd)
         if (config.table === 'tarieven') {
@@ -161,7 +168,7 @@ const Section = ({ data }) => {
               id={config.table.toLowerCase()}
               data-dock-section={config.table.toLowerCase()}
               className={`${bgClass} ${visibilityClass} relative transition-all duration-500 px-6`}
-              style={{ paddingTop: `${paddingVal * 4}px`, paddingBottom: `${paddingVal * 4}px` }}
+              style={{ paddingTop: `${paddingValue * 4}px`, paddingBottom: `${paddingValue * 4}px` }}
             >
               {!isVisible && isDev && <div className="absolute top-4 right-4 bg-red-500 text-white text-[10px] px-2 py-1 rounded font-bold uppercase z-50">Hidden Section</div>}
               <div className="max-w-6xl mx-auto">
@@ -231,7 +238,7 @@ const Section = ({ data }) => {
             id={config.table.toLowerCase()}
             data-dock-section={config.table.toLowerCase()}
             className={`${bgClass} ${visibilityClass} relative transition-all duration-500 px-6`}
-            style={{ paddingTop: `${paddingVal * 4}px`, paddingBottom: `${paddingVal * 4}px` }}
+            style={{ paddingTop: `${paddingValue * 4}px`, paddingBottom: `${paddingValue * 4}px` }}
           >
             {!isVisible && isDev && <div className="absolute top-4 right-4 bg-red-500 text-white text-[10px] px-2 py-1 rounded font-bold uppercase z-50">Hidden Section</div>}
 
@@ -364,7 +371,7 @@ const Section = ({ data }) => {
 
                   if (currentLayout === 'list') {
                     return (
-                      <article key={index} className={itemClass + ' flex flex-col md:flex-row items-start gap-12 border-b border-slate-100 dark:border-white/5 pb-24 last:border-0'}>
+                      <article key={index} className={itemClass + ' flex flex-col md:flex-row items-start border-b border-slate-100 dark:border-white/5 last:border-0'} style={{ paddingBottom: `${listGap}px`, marginBottom: `${listGap}px` }}>
                         {imgKey && (
                           <div className="w-32 h-32 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
                             <EditableMedia 

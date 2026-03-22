@@ -11,7 +11,7 @@ const SectionManagerPanel = (props) => {
     onMoveSection,
     onToggleSection,
     onUpdateLayout,
-    onUpdatePadding,
+    onUpdateSectionSetting, // Changed from onUpdatePadding
     onAddItem,
     onDeleteItem,
     onMoveField,
@@ -27,6 +27,7 @@ const SectionManagerPanel = (props) => {
 
   const [activeView, setActiveView] = useState('sections'); // 'sections', 'settings', 'fields', 'items'
   const [selectedSection, setSelectedSection] = useState(null);
+  const [showPaddingFor, setShowPaddingFor] = useState(null);
 
   const getSectionSetting = (sectionId, property, defaultValue = null) => {
     const settings = siteStructure?.data?.section_settings;
@@ -93,7 +94,10 @@ const SectionManagerPanel = (props) => {
     </div>
   );
 
-  const renderSectionSettings = () => (
+  const renderSectionSettings = () => {
+    const useCustom = getSectionSetting(selectedSection, 'use_custom_padding');
+
+    return (
     <div className="space-y-6 p-6 animate-in slide-in-from-right-4 duration-200">
       <div className="flex items-center gap-3 mb-4">
         <button onClick={() => setActiveView('sections')} className="w-8 h-8 flex items-center justify-center hover:bg-slate-200 rounded-full text-slate-500"><i className="fa-solid fa-arrow-left"></i></button>
@@ -105,30 +109,71 @@ const SectionManagerPanel = (props) => {
             <div>
                 <label className="text-[9px] font-black uppercase text-slate-400 block mb-2 tracking-widest">Layout Pattern</label>
                 <div className="grid grid-cols-2 gap-2">
-                    {['grid', 'list', 'z-pattern', 'focus'].map(l => (
-                        <button 
-                            key={l}
-                            onClick={() => onUpdateLayout(selectedSection, l)}
-                            className={`py-2 text-[9px] font-bold rounded border uppercase ${siteStructure?.layouts?.[selectedSection] === l ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-slate-200 text-slate-500 hover:border-blue-300'}`}
-                        >
-                            {l}
-                        </button>
-                    ))}
+                    {['grid', 'list', 'z-pattern', 'focus'].map(l => {
+                        const layouts = siteStructure?.layouts || {};
+                        const currentLayout = layouts[selectedSection] || layouts[selectedSection.toLowerCase()] || 'grid';
+                        return (
+                            <button 
+                                key={l}
+                                onClick={() => onUpdateLayout(selectedSection, l)}
+                                className={`py-2 text-[9px] font-bold rounded border uppercase ${currentLayout === l ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-slate-200 text-slate-500 hover:border-blue-300'}`}
+                            >
+                                {l}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
-            <div>
-                <label className="text-[9px] font-black uppercase text-slate-400 block mb-2 tracking-widest">Vertical Padding</label>
-                <input 
-                    type="range" min="0" max="120" step="8"
-                    value={getSectionSetting(selectedSection, 'padding') || 32}
-                    onChange={(e) => onUpdatePadding(selectedSection, parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between mt-1 font-mono text-[9px] text-slate-400">
-                    <span className="font-bold text-blue-600">{getSectionSetting(selectedSection, 'padding') || 32}px</span>
+
+            <div className="pt-4 border-t border-slate-100 space-y-4">
+                <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-black uppercase text-slate-500 tracking-widest">Eigen Spacing Gebruiken</label>
+                    <label htmlFor={`toggle-custom-padding-${selectedSection}`} className="relative inline-flex items-center cursor-pointer">
+                        <input
+                            type="checkbox"
+                            id={`toggle-custom-padding-${selectedSection}`}
+                            className="sr-only peer"
+                            checked={useCustom}
+                            onChange={(e) => onUpdateSectionSetting(selectedSection, 'use_custom_padding', e.target.checked)}
+                        />
+                        <div className={`w-10 h-5 rounded-full transition-all relative ${useCustom ? 'bg-blue-600' : 'bg-slate-300'}`}>
+                            <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${useCustom ? 'left-6' : 'left-1'}`}></div>
+                        </div>
+                    </label>
                 </div>
+
+                {useCustom && (
+                    <div className="space-y-2 pt-2 animate-in fade-in slide-in-from-top-2">
+                        <div className="flex justify-between items-center mb-1">
+                            <label className="text-[9px] font-black uppercase text-slate-400">Verticale Spacing</label>
+                            <span className="text-[10px] font-mono font-bold text-blue-600">{getSectionSetting(selectedSection, 'padding') || 12}px</span>
+                        </div>
+                        <input 
+                            type="range" min="0" max="40" step="1"
+                            value={getSectionSetting(selectedSection, 'padding') || 12}
+                            onChange={(e) => onUpdateSectionSetting(selectedSection, 'padding', parseInt(e.target.value))}
+                            className={`w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600 ${!useCustom ? 'opacity-30 pointer-events-none' : ''}`}
+                            disabled={!useCustom}
+                        />
+                    </div>
+                )}
             </div>
         </div>
+
+        {siteStructure?.layouts?.[selectedSection] === 'list' && (
+            <div className="p-4 bg-blue-50/30 rounded-2xl border border-blue-100/50 space-y-3">
+                <div className="flex justify-between items-center">
+                    <label className="text-[10px] font-black uppercase text-blue-600/60 tracking-widest">Item Tussenruimte (Vertical)</label>
+                    <span className="text-[10px] font-mono font-bold text-blue-600">{getSectionSetting(selectedSection, 'list_gap') || 96}px</span>
+                </div>
+                <input 
+                    type="range" min="20" max="240" step="12"
+                    value={getSectionSetting(selectedSection, 'list_gap') || 96}
+                    onChange={(e) => onUpdateSectionSetting(selectedSection, 'list_gap', parseInt(e.target.value))}
+                    className="w-full h-1 bg-blue-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+            </div>
+        )}
 
         <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-lg space-y-3">
             <label className="text-[9px] font-black uppercase text-blue-400 block tracking-widest">AI & Section Magic</label>
@@ -193,6 +238,7 @@ const SectionManagerPanel = (props) => {
       </div>
     </div>
   );
+};
 
   const renderFieldManager = () => {
     const fields = (siteStructure?.data?.[selectedSection]?.[0] ? Object.keys(siteStructure.data[selectedSection][0]) : [])
@@ -258,7 +304,9 @@ const SectionManagerPanel = (props) => {
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-1 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
                 {items.map((itemData, idx) => (
                     <div key={idx} className="flex items-center justify-between p-2.5 bg-white border border-slate-100 mb-1 rounded shadow-sm group">
-                        <span className="text-[11px] font-bold text-slate-600 truncate pr-2 flex-1">{extractTitle(itemData, idx)}</span>
+                        <div className="flex items-center gap-2 flex-1 min-w-0 pr-2">
+                            <span className="text-[11px] font-bold text-slate-600 truncate pr-2 flex-1">{extractTitle(itemData, idx)}</span>
+                        </div>
                         <button 
                             onClick={() => onDeleteItem(selectedSection, idx)}
                             className="p-1.5 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded transition-all opacity-0 group-hover:opacity-100"

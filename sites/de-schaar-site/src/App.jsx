@@ -88,13 +88,31 @@ const App = ({ data: initialData }) => {
           });
       }
 
+      if (type === 'DOCK_UPDATE_SECTION_DATA') {
+          setData(prev => {
+             const newData = { ...prev };
+             const settings = [...(newData.section_settings || [])];
+             const idx = settings.findIndex(s => s.id === section);
+             if (idx !== -1) {
+                 settings[idx] = { ...settings[idx], [key]: value };
+                 newData.section_settings = settings;
+             }
+             return newData;
+          });
+      }
+
       if (type === 'DOCK_UPDATE_LAYOUT') {
           setData(prev => {
              const newData = { ...prev };
-             const layouts = { ...(newData.layout_settings || {}) };
              const target = section || file;
-             layouts[target] = value;
-             newData.layout_settings = layouts;
+             
+             if (Array.isArray(newData.layout_settings)) {
+                 const settings = [...newData.layout_settings];
+                 settings[0] = { ...settings[0], [target]: value };
+                 newData.layout_settings = settings;
+             } else {
+                 newData.layout_settings = { ...(newData.layout_settings || {}), [target]: value };
+             }
              return newData;
           });
       }
@@ -105,6 +123,18 @@ const App = ({ data: initialData }) => {
               newData.section_order = value;
               return newData;
           });
+      }
+
+      if (type === 'DOCK_UPDATE_DATA') {
+          setData(prev => ({
+              ...prev,
+              [file]: value
+          }));
+      }
+
+      if (type === 'DOCK_FORCE_REFRESH') {
+          console.log("⚓ Athena Dock triggered Hard Refresh...");
+          window.location.reload();
       }
     };
 

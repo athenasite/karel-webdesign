@@ -5,6 +5,7 @@
     "teamleden": "grid",
     "hero": "list",
     "locatie": "z-pattern",
-    "team": "grid"
+    "team": "grid",
+    "testimonials": "list"
   }
 ]

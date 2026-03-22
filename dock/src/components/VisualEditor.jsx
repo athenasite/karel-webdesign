@@ -27,7 +27,7 @@ const VisualEditor = (props) => {
   
   const initialValueData = item?.value || item?.currentValue || '';
   const dockType = item?.type || item?.dockType || item?.dataType || 'text';
-  const isLink = dockType === 'link';
+  const isLink = dockType === 'link' || dockType === 'button';
   const isMedia = dockType === 'media' || (!isLink && item?.binding?.key?.toLowerCase().includes('image'));
 
   const [linkData, setLinkData] = useState({ label: '', url: '' });

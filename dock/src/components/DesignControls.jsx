@@ -245,6 +245,38 @@ export default function DesignControls({
           </div>
         </Accordion>
 
+        {/* 🌐 Global Layout (v8.9) */}
+        <Accordion 
+          id="global_layout" 
+          title="Global Page Spacing" 
+          icon="fa-arrows-left-right-to-line" 
+          isOpen={openAccordion === 'global_layout'} 
+          onToggle={toggleAccordion}
+        >
+          <div className="space-y-6">
+            <Slider 
+                label="Algemene Sectie Spacing" 
+                value={parseInt(localData.global_padding || 64)} 
+                min={0} max={160} unit="px" 
+                onChange={(v) => { handlePreview('global_padding', v); handleSave('global_padding', v); }} 
+            />
+            
+            <div className="pt-4 border-t border-slate-100">
+                <button 
+                    onClick={() => {
+                        if (window.confirm("Weet je zeker dat je ALLE secties wilt resetten naar de globale spacing? Individuele afwijkingen gaan verloren.")) {
+                             window.parent.postMessage({ type: 'DOCK_RESET_ALL_PADDING' }, '*');
+                        }
+                    }}
+                    className="w-full py-3 bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 border border-slate-200 hover:border-red-100"
+                >
+                    <i className="fa-solid fa-rotate-left mr-2"></i>
+                    Reset Alle Secties naar Globaal
+                </button>
+            </div>
+          </div>
+        </Accordion>
+
         {/* 🎨 Global Colors Accordion */}
         <Accordion 
           id="colors" 

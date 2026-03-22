@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite' // v8.9.1 Restart Trigger
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import fs from 'fs'
@@ -18,7 +18,8 @@ export default defineConfig(async ({ command }) => {
     if (fs.existsSync(pluginPath)) {
       try {
         // Gebruik een variabele voor de import om statische analyse door esbuild in CI te voorkomen
-        const pluginModule = await import(`file://${pluginPath}`);
+        // v8.9.1: Voeg timestamp toe om Node module cache te omzeilen bij herstarts
+        const pluginModule = await import(`file://${pluginPath}?t=${Date.now()}`);
         athenaEditorPlugin = pluginModule.default;
       } catch (e) {
         console.warn('⚠️ Athena Editor plugin kon niet worden geladen:', e.message);

@@ -118,6 +118,36 @@ export default function athenaEditorPlugin() {
                 return res.end(JSON.stringify({ error: "Style file not found or target not identified" }));
               }
 
+              if (action === 'replace') {
+                console.log(`[Athena Editor] 🔄 Replacing whole file content for: ${file}`);
+                try {
+                  const dataPath = getDataPath(file);
+                  if (!dataPath) {
+                    console.error(`[Athena Editor] ❌ No path found for file: ${file}`);
+                    return res.end(JSON.stringify({ error: "Invalid path" }));
+                  }
+                  
+                  console.log(`[Athena Editor] 📝 Writing to: ${dataPath}`);
+                  fs.writeFileSync(dataPath, JSON.stringify(value, null, 2));
+                  console.log(`[Athena Editor] ✅ File written successfully.`);
+                  
+                  // 🔥 v8.1 Auto-Aggregation Hook
+                  console.log(`[Athena Editor] 🔗 Running Data Aggregator for: ${rootDir}`);
+                  try {
+                    DataAggregator.aggregate(rootDir);
+                    console.log(`[Athena Editor] ✅ Aggregation complete.`);
+                  } catch (aggErr) {
+                    console.error(`[Athena Editor] ⚠️ Aggregation failed:`, aggErr.message);
+                  }
+                  
+                  return res.end(JSON.stringify({ success: true }));
+                } catch (innerErr) {
+                  console.error(`[Athena Editor] ❌ Replace action crashed:`, innerErr.message);
+                  res.statusCode = 500;
+                  return res.end(JSON.stringify({ error: innerErr.message, stack: innerErr.stack }));
+                }
+              }
+
               if (action === 'reorder-sections') {
                 const orderPath = getDataPath('section_order');
                 if (!orderPath) return res.end(JSON.stringify({ error: "No path" }));
@@ -253,15 +283,15 @@ export default function athenaEditorPlugin() {
                     }
                     links[`${file}:${idx}:${key}`] = value.url;
                     fs.writeFileSync(linksPath, JSON.stringify(links, null, 2));
-                  } else {
+                  } else if (key) {
                     data[idx][key] = value;
                   }
                 } else {
                   // Normale object update (voor site_settings etc)
                   if (typeof value === 'object' && value !== null && 'label' in value && 'url' in value) {
                     console.log(`[Athena Editor] 🔗 Link Handling (Object): Saving full object to ${file}`);
-
-                    const keys = key.split('.');
+                    
+                    const keys = (key || "").split('.');
                     let current = data;
                     for (let i = 0; i < keys.length - 1; i++) {
                       const k = keys[i];
@@ -279,7 +309,7 @@ export default function athenaEditorPlugin() {
                     }
                     links[`${file}:${index || 0}:${key}`] = value.url;
                     fs.writeFileSync(linksPath, JSON.stringify(links, null, 2));
-                  } else {
+                  } else if (key) {
                     const keys = key.split('.');
                     let current = data;
                     for (let i = 0; i < keys.length - 1; i++) {

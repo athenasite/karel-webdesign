@@ -85,7 +85,7 @@
 
         const structure = {
             sections: scanSections(),
-            layouts: lastKnownData?.layout_settings?.[0] || lastKnownData?.layout_settings || {},
+            layouts: (Array.isArray(lastKnownData?.layout_settings) ? lastKnownData.layout_settings[0] : lastKnownData?.layout_settings) || {},
             data: lastKnownData || {},
             url: window.location.href,
             timestamp: Date.now()

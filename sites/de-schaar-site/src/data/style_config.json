@@ -2,5 +2,6 @@
   "site_name": "de-schaar-site",
   "light_footer_color": "#109e41",
   "light_bg_color": "#d6d6d6",
-  "light_header_color": "#d6ffff"
+  "light_header_color": "#d6ffff",
+  "global_padding": 18
 }

@@ -83,7 +83,7 @@ const NavigationManager = ({ navigationData, onSave, onClose }) => {
                     <div>
                         <input 
                             type="text" 
-                            value={link.label || ''}
+                            value={link.label || link.titel || (typeof link.titel_navigatie === 'object' ? link.titel_navigatie?.text : link.titel_navigatie) || ''}
                             onChange={(e) => updateLink(index, 'label', e.target.value)}
                             placeholder="Link Label (bijv. 'Over Ons')"
                             className="w-full text-sm font-bold bg-transparent border-0 border-b border-slate-200 dark:border-slate-700 px-0 py-1 focus:ring-0 focus:border-blue-500 dark:text-white"
@@ -92,7 +92,7 @@ const NavigationManager = ({ navigationData, onSave, onClose }) => {
                     <div>
                         <input 
                             type="text" 
-                            value={link.url || ''}
+                            value={link.url || link.slug || ''}
                             onChange={(e) => updateLink(index, 'url', e.target.value)}
                             placeholder="URL of Anchor (bijv. '#about' of '/contact')"
                             className="w-full text-xs font-mono text-slate-500 bg-transparent border-0 border-b border-slate-200 dark:border-slate-700 px-0 py-1 focus:ring-0 focus:border-blue-500"

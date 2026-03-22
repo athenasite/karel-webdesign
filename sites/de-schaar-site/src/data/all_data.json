@@ -185,9 +185,9 @@
     {
       "titel": {
         "text": "De Schaar",
-        "color": "#ee7c11",
-        "fontSize": "",
-        "fontWeight": "normal",
+        "color": "#968232",
+        "fontSize": "132",
+        "fontWeight": "bold",
         "fontStyle": "normal",
         "textAlign": "left",
         "fontFamily": "",
@@ -217,7 +217,10 @@
         "label": "ons aanbod",
         "url": "#tarieven"
       },
-      "hero_overlay_transparantie": 0.16
+      "hero_overlay_transparantie": 0.16,
+      "hero_full_height": false,
+      "hero_show_arrow": false,
+      "hero_glass_card": false
     }
   ],
   "layout_settings": [
@@ -227,7 +230,8 @@
       "teamleden": "grid",
       "hero": "list",
       "locatie": "z-pattern",
-      "team": "grid"
+      "team": "grid",
+      "testimonials": "list"
     }
   ],
   "links_config": {
@@ -269,6 +273,20 @@
       "is_call_to_action": false
     },
     {
+      "pagina_id": 3,
+      "titel_navigatie": {
+        "text": "OVER ONS",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "missie",
+      "menu_positie": 3,
+      "is_call_to_action": false
+    },
+    {
       "pagina_id": 2,
       "titel_navigatie": {
         "text": "PRIJZEN",
@@ -283,18 +301,13 @@
       "is_call_to_action": false
     },
     {
-      "pagina_id": 3,
-      "titel_navigatie": {
-        "text": "OVER ONS",
-        "color": "#000000",
-        "fontSize": "",
-        "fontWeight": "normal",
-        "fontStyle": "normal",
-        "textAlign": "left"
-      },
-      "slug": "missie",
-      "menu_positie": 3,
-      "is_call_to_action": false
+      "pagina_id": 6,
+      "titel_navigatie": "Afspraak",
+      "slug": "footer",
+      "menu_positie": 6,
+      "is_call_to_action": true,
+      "label": "TESTIMONIALS",
+      "url": "testimonials"
     },
     {
       "pagina_id": 4,
@@ -323,13 +336,87 @@
       "slug": "footer",
       "menu_positie": 5,
       "is_call_to_action": false
+    }
+  ],
+  "navigation": [
+    {
+      "pagina_id": 1,
+      "titel_navigatie": {
+        "text": "HOME",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "hero",
+      "menu_positie": 1,
+      "is_call_to_action": false
+    },
+    {
+      "pagina_id": 3,
+      "titel_navigatie": {
+        "text": "OVER ONS",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "missie",
+      "menu_positie": 3,
+      "is_call_to_action": false
+    },
+    {
+      "pagina_id": 2,
+      "titel_navigatie": {
+        "text": "PRIJZEN",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "tarieven",
+      "menu_positie": 2,
+      "is_call_to_action": false
     },
     {
       "pagina_id": 6,
       "titel_navigatie": "Afspraak",
       "slug": "footer",
       "menu_positie": 6,
-      "is_call_to_action": true
+      "is_call_to_action": true,
+      "label": "TESTIMONIALS",
+      "url": "testimonials"
+    },
+    {
+      "pagina_id": 4,
+      "titel_navigatie": {
+        "text": "AVEDA & INFO",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "aveda",
+      "menu_positie": 4,
+      "is_call_to_action": false
+    },
+    {
+      "pagina_id": 5,
+      "titel_navigatie": {
+        "text": "OPENINGSUREN",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left"
+      },
+      "slug": "footer",
+      "menu_positie": 5,
+      "is_call_to_action": false
     }
   ],
   "openingsuren": [
@@ -730,7 +817,7 @@
       "id": "stylist_gradatie",
       "title": "Stylist Gradaties",
       "subtitle": "Gediplomeerd vakmanschap",
-      "visible": true,
+      "visible": false,
       "padding": 40
     },
     {
@@ -738,7 +825,7 @@
       "title": "Ons Team",
       "subtitle": "De makers van jouw stijl",
       "visible": true,
-      "padding": 40
+      "padding": 8
     },
     {
       "id": "tarieven",
@@ -752,7 +839,8 @@
       "title": "Wat klanten zeggen",
       "subtitle": "Echte ervaringen",
       "visible": true,
-      "padding": 40
+      "padding": 0,
+      "list_gap": 20
     },
     {
       "id": "aveda",
@@ -782,12 +870,16 @@
     "toon_logo": true,
     "toon_ondertitel": true,
     "toon_titel": false,
-    "light_button_color": "#d03535",
+    "light_button_color": "#dd4040",
     "--color-button-rgb": "208 53 53",
     "dark_heading_color": "#d73c3c",
     "dark_accent_color": "#d35555",
-    "light_accent_color": "#b3b3b3",
+    "light_accent_color": "#988234",
     "light_heading_color": "#a18e17",
+    "light_text_color": "#1f2937",
+    "dark_text_color": "#f3f4f6",
+    "light_menu_color": "#ffffff",
+    "dark_menu_color": "#1e293b",
     "header_show_logo": false
   },
   "social_media": [
@@ -808,7 +900,11 @@
   ],
   "style_bindings": [],
   "style_config": {
-    "site_name": "de-schaar-site"
+    "site_name": "de-schaar-site",
+    "light_footer_color": "#109e41",
+    "light_bg_color": "#d6d6d6",
+    "light_header_color": "#d6ffff",
+    "global_padding": 18
   },
   "stylist_gradatie": [
     {

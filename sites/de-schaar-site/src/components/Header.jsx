@@ -20,9 +20,17 @@ function Header({ siteSettings = {}, headerSettings = {}, headerData = [], navDa
 
   const handleScroll = (e, url) => {
     setIsMenuOpen(false); 
-    const targetUrl = typeof url === 'object' ? url?.url : url;
+    let targetUrl = typeof url === 'object' ? url?.url : url;
     
-    if (targetUrl && targetUrl.startsWith('#')) {
+    if (!targetUrl) return;
+
+    // v8.9.3: Auto-handle anchors even if they don't start with '#'
+    // If it doesn't look like a full URL or a root path, and doesn't have a hash, assume it's an anchor
+    if (!targetUrl.startsWith('#') && !targetUrl.startsWith('http') && !targetUrl.startsWith('/')) {
+        targetUrl = '#' + targetUrl;
+    }
+    
+    if (targetUrl.startsWith('#')) {
       e.preventDefault();
       const targetId = targetUrl.substring(1);
       const element = document.getElementById(targetId);
@@ -35,9 +43,10 @@ function Header({ siteSettings = {}, headerSettings = {}, headerData = [], navDa
           top: offsetPosition,
           behavior: 'smooth'
         });
+        
+        // Update URL hash without jumping
+        window.history.pushState(null, null, targetUrl);
       } else {
-        // Fallback for sections that might be inside a layout 
-        // Or if it's just 'footer'
         if (targetId === 'footer') {
            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }

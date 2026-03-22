@@ -256,6 +256,10 @@ const DockFrame = () => {
         const { binding, value } = event.data;
         saveData(binding.file, binding.index, binding.key, value);
       }
+
+      if (event.data.type === 'DOCK_RESET_ALL_PADDING') {
+        handleResetAllPadding();
+      }
     };
 
     window.addEventListener('message', handleMessage);
@@ -485,22 +489,41 @@ const DockFrame = () => {
   const handleNavigationSave = async (links) => {
     console.log(`🧭 Saving navigation data:`, links);
     try {
-        const dashboardPort = import.meta.env.VITE_DASHBOARD_PORT || '5001';
-        const hostname = window.location.hostname;
-        const res = await fetch(`http://${hostname}:${dashboardPort}/api/sites/${selectedSite.id}/update-json`, {
+        const url = getSiteApiUrl();
+        if (!url) return;
+        
+        const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ file: 'navigation', data: links })
+            body: JSON.stringify({ file: 'navbar', value: links, action: 'replace' })
         });
+        
         if (res.ok) {
             setSiteStructure(prev => ({
                 ...prev,
-                data: { ...prev.data, navigation: links }
+                data: { ...prev.data, navbar: links }
             }));
+
+            // 🔥 Direct Sync for instant UI feedback
+            if (iframeRef.current) {
+                iframeRef.current.contentWindow.postMessage({
+                    type: 'DOCK_UPDATE_DATA',
+                    file: 'navbar',
+                    value: links
+                }, '*');
+            }
+
             forceRefresh();
             setShowNavigationManager(false);
+            console.log("✅ Navigation saved successfully via site API.");
+        } else {
+            const errData = await res.json();
+            alert(`Fout bij opslaan navigatie: ${errData.error || res.statusText}`);
         }
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error('❌ Navigation save failed:', e); 
+        alert("Kon navigatie niet opslaan. Is de site-server actief?");
+    }
   };
 
   const handleApplyLayoutPreset = async (presetId) => {
@@ -810,6 +833,93 @@ const DockFrame = () => {
       });
       if (res.ok) setTimeout(forceRefresh, 300);
     } catch (err) { console.error(err); }
+  };
+
+  const handleReorderItems = async (tableName, index, direction) => {
+    try {
+        const url = getSiteApiUrl();
+        if (!url) return;
+        const items = [...(siteStructure?.data?.[tableName] || [])];
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= items.length) return;
+
+        console.log(`↔️ Reordering items in ${tableName}: ${index} -> ${newIndex}`);
+
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                file: tableName.toLowerCase(), 
+                action: 'reorder', 
+                index: index, 
+                direction: direction === 1 ? 'down' : 'up' 
+            })
+        });
+
+        if (res.ok) {
+            // Optimistic update
+            const newItems = [...items];
+            [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
+            setSiteStructure(prev => ({
+                ...prev,
+                data: { ...prev.data, [tableName]: newItems }
+            }));
+            
+            if (iframeRef.current) {
+                iframeRef.current.contentWindow.postMessage({
+                    type: 'DOCK_UPDATE_DATA',
+                    file: tableName,
+                    data: newItems
+                }, '*');
+            }
+        }
+    } catch (err) { console.error(err); }
+  };
+
+  const handleResetAllPadding = async () => {
+    try {
+      const url = getSiteApiUrl();
+      if (!url) return;
+      
+      const sections = siteStructure?.data?.section_settings || [];
+      const updatedSections = sections.map(s => ({ ...s, use_custom_padding: false }));
+      
+      console.log(`🌀 Resetting all section padding to global...`);
+      
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          file: 'section_settings', 
+          action: 'overwrite', 
+          data: updatedSections 
+        })
+      });
+      
+      if (res.ok) {
+        setSiteStructure(prev => ({
+          ...prev,
+          data: { ...prev.data, section_settings: updatedSections }
+        }));
+        setTimeout(forceRefresh, 300);
+      }
+    } catch (err) { console.error(err); }
+  };
+
+  const onUpdateSectionSetting = (section, key, value) => {
+    const settings = siteStructure?.data?.section_settings;
+    if (!settings) return;
+
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.postMessage({ type: 'DOCK_UPDATE_SECTION_DATA', section, key, value }, '*');
+    }
+
+    if (Array.isArray(settings)) {
+      const idx = settings.findIndex(s => s.id === section);
+      if (idx !== -1) saveData('section_settings', idx, key, value);
+    } else {
+      saveData('section_settings', null, `${section}.${key}`, value);
+    }
   };
 
   const updateFieldConfig = async (tableName, config) => {
@@ -1177,21 +1287,7 @@ const DockFrame = () => {
               onMoveSection={moveSection}
               onToggleSection={toggleSectionVisibility}
               onUpdateLayout={updateLayout}
-              onUpdatePadding={(section, val) => {
-                const settings = siteStructure?.data?.section_settings;
-                if (!settings) return;
-
-                if (iframeRef.current) {
-                  iframeRef.current.contentWindow.postMessage({ type: 'DOCK_UPDATE_SECTION_PADDING', section, value: val }, '*');
-                }
-
-                if (Array.isArray(settings)) {
-                  const idx = settings.findIndex(s => s.id === section);
-                  if (idx !== -1) saveData('section_settings', idx, 'padding', val);
-                } else {
-                  saveData('section_settings', null, `${section}.padding`, val);
-                }
-              }}
+              onUpdateSectionSetting={onUpdateSectionSetting}
               onAddItem={addItem}
               onDeleteItem={deleteItem}
               onMoveField={moveField}
@@ -1202,6 +1298,7 @@ const DockFrame = () => {
               onAIRedesign={handleAIRedesign}
               onDuplicateSection={handleDuplicateSection}
               onRenameSection={handleRenameSection}
+              onReorderItems={handleReorderItems}
             />
           ) : (
             <DesignControls
@@ -1254,7 +1351,17 @@ const DockFrame = () => {
 
           {showLayoutManager && (
             <LayoutManager 
-              siteStructure={siteStructure}
+              sectionOrder={siteStructure?.sections}
+              sectionSettings={siteStructure?.data?.section_settings}
+              onReorder={(newOrder) => {
+                  setSiteStructure(prev => ({ ...prev, sections: newOrder }));
+                  // Server save logic (if needed) ...
+              }}
+              onDelete={(id) => deleteSection(id)}
+              onDuplicate={(id) => handleDuplicateSection(id)}
+              onToggleVisibility={(id) => toggleSectionVisibility(id)}
+              layouts={siteStructure?.layouts}
+              onUpdateLayout={updateLayout}
               onClose={() => setShowLayoutManager(false)}
               onApplyPreset={handleApplyLayoutPreset}
             />
@@ -1262,7 +1369,7 @@ const DockFrame = () => {
 
           {showNavigationManager && (
             <NavigationManager 
-              siteStructure={siteStructure}
+              navigationData={siteStructure?.data?.navbar || siteStructure?.data?.navigation || []}
               onClose={() => setShowNavigationManager(false)}
               onSave={handleNavigationSave}
             />
