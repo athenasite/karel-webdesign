@@ -26,7 +26,7 @@ const VisualEditor = (props) => {
   const [value, setValue] = useState('');
   
   const initialValueData = item?.value || item?.currentValue || '';
-  const dockType = item?.type || item?.dockType || item?.dataType || 'text';
+  const dockType = item?.dockType || item?.type || item?.dataType || 'text';
   const isLink = dockType === 'link' || dockType === 'button';
   const isMedia = dockType === 'media' || (!isLink && item?.binding?.key?.toLowerCase().includes('image'));
 
