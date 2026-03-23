@@ -1,3 +1,6 @@
-{
-  "site_name": "athena-promo"
-}
+[
+  {
+    "Key": "site_name",
+    "Value": "athena-promo"
+  }
+]

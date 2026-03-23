@@ -6,11 +6,11 @@
     "startTime": "2026-03-23T07:38:08.035Z",
     "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/athena-dock-dock.log"
   },
-  "6001": {
-    "pid": 3413,
-    "id": "athena-pro",
+  "5017": {
+    "pid": 484,
+    "id": "athena-promo",
     "type": "preview",
-    "startTime": "2026-03-23T07:29:19.976Z",
-    "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/athena-pro-preview.log"
+    "startTime": "2026-03-23T08:39:04.744Z",
+    "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/athena-promo-preview.log"
   }
 }

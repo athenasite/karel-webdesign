@@ -153,16 +153,94 @@ export class AthenaDataManager {
     }
 
     /**
-     * Sync from Sheet (Trigger pnpm fetch-data in site)
+     * Sync from Sheet (Authenticated via Google Sheets API)
      */
     async syncFromSheet(projectName) {
         const paths = this.resolvePaths(projectName);
         if (!fs.existsSync(paths.siteDir)) throw new Error(`Site directory not found for ${projectName}`);
 
+        const settingsPath = path.join(paths.settingsDir, 'url-sheet.json');
+        if (!fs.existsSync(settingsPath)) {
+             console.warn("⚠️ No url-sheet.json found. Falling back to unauthenticated 'pnpm fetch-data'...");
+             execSync('pnpm fetch-data', { cwd: paths.siteDir, stdio: 'inherit' });
+             return { success: true, message: "Unauthenticated fetch-data performed." };
+        }
+
+        const urlConfig = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+        const firstUrl = (urlConfig._system || Object.values(urlConfig)[0]).editUrl;
+        const spreadsheetId = firstUrl.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];
+
+        if (!spreadsheetId) {
+             throw new Error("❌ Could not determine Spreadsheet ID from url-sheet.json.");
+        }
+
+        const auth = await this.getAuth().getClient();
+        const sheets = google.sheets({ version: 'v4', auth });
+
+        console.log(`📡 Authenticated Pull for '${projectName}' (ID: ${spreadsheetId})...`);
+
+        // 1. Get Spreadsheet Metadata to find all tabs
+        const meta = await sheets.spreadsheets.get({ spreadsheetId });
+        const tabs = meta.data.sheets.map(s => s.properties.title);
+
         this.backupData(paths.siteDir, paths.dataDir);
 
-        console.log(`🚀 Fetching data for '${projectName}'...`);
-        execSync('pnpm fetch-data', { cwd: paths.siteDir, stdio: 'inherit' });
+        // 2. Load schema to use for mapping (if available)
+        let mapper = { mapHeader: (k) => k, mapValue: (v) => v };
+        const schemaPath = fs.existsSync(path.join(paths.dataDir, 'schema.json')) 
+            ? path.join(paths.dataDir, 'schema.json') 
+            : path.join(paths.dataDir, '_schema.json');
+        
+        if (fs.existsSync(schemaPath)) {
+            try {
+                const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+                const { createMapper } = await import('./mapper.js'); 
+                mapper = createMapper(schema);
+            } catch (e) { console.warn("⚠️ Could not load schema for mapping, using raw headers."); }
+        }
+
+        // 3. Batch Get all values
+        const ranges = tabs.map(t => `${t}!A1:Z1000`);
+        const res = await sheets.spreadsheets.values.batchGet({
+            spreadsheetId,
+            ranges
+        });
+
+        const valueRanges = res.data.valueRanges || [];
+        for (let i = 0; i < tabs.length; i++) {
+            const tabName = tabs[i];
+            const rows = valueRanges[i].values;
+            if (!rows || rows.length < 1) continue;
+
+            const headers = rows[0];
+            const dataRows = rows.slice(1);
+
+            const json = dataRows.map(row => {
+                const obj = {};
+                headers.forEach((header, idx) => {
+                    if (!header) return;
+                    const techKey = mapper.mapHeader(header);
+                    let val = row[idx] !== undefined ? row[idx] : "";
+                    
+                    if (typeof val === 'string') {
+                        val = mapper.mapValue(val);
+                        val = val.replace(/<br\s*\/?>/gi, '\n').trim();
+                    }
+                    obj[techKey] = val;
+                });
+                return obj;
+            }).filter(row => Object.values(row).some(v => v !== ""));
+
+            let filename = `${tabName.toLowerCase()}.json`;
+            if (tabName === '_style_config') filename = 'style_config.json';
+            if (tabName === '_links_config') filename = 'links_config.json';
+            
+            const destPath = path.join(paths.dataDir, filename);
+            fs.writeFileSync(destPath, JSON.stringify(json, null, 2));
+            console.log(`  ✅ ${tabName} synced -> ${filename}`);
+        }
+
+        console.log(`\n🎉 Authenticated Data Sync Complete!`);
     }
 
     /**

@@ -49,8 +49,8 @@ const GenericSection = ({ data, sectionName, layout = 'list', features = {}, sty
                     {data.map((item, index) => {
                         const titleKey = Object.keys(item).find(k => /naam|titel|onderwerp|header|title/i.test(k));
                         const iconKey = Object.keys(item).find(k => /icoon|icon/i.test(k));
-                        const imgKey = Object.keys(item).find(k => /foto|afbeelding|url|image|img/i.test(k));
-                        const textKeys = Object.keys(item).filter(k => k !== titleKey && k !== iconKey && k !== imgKey && !/link|id/i.test(k));
+                        const imgKey = Object.keys(item).find(k => /foto|afbeelding|image|img/i.test(k));
+                        const textKeys = Object.keys(item).filter(k => k !== titleKey && k !== iconKey && k !== imgKey && !/link|id|url/i.test(k));
                         const isEven = index % 2 === 0;
 
                         if (effectiveLayout === 'grid') {
@@ -82,6 +82,23 @@ const GenericSection = ({ data, sectionName, layout = 'list', features = {}, sty
                                                 <span data-dock-type="text" data-dock-bind={`${sectionName}.${index}.${tk}`}>{item[tk]}</span>
                                             </div>
                                         ))}
+
+                                        {/* Showcase Link Rendering */}
+                                        {item.url && (
+                                            <div className="mt-auto pt-6 w-full">
+                                                <a 
+                                                    href={item.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    data-dock-type="link"
+                                                    data-dock-bind={`${sectionName}.${index}.url`}
+                                                    className="inline-flex items-center gap-2 px-6 py-3 bg-accent/10 text-accent font-bold rounded-2xl border border-accent/20 hover:bg-accent hover:text-white transition-all duration-300 group/btn"
+                                                >
+                                                    <span>Bekijk Project</span>
+                                                    <i className="fa-solid fa-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                                                </a>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             );
@@ -104,11 +121,21 @@ const GenericSection = ({ data, sectionName, layout = 'list', features = {}, sty
                                             <span data-dock-type="text" data-dock-bind={`${sectionName}.${index}.${titleKey}`}>{item[titleKey]}</span>
                                         </h3>
                                     )}
-                                    {textKeys.map(tk => (
-                                        <div key={tk} className="text-xl leading-relaxed text-slate-400 mb-6 font-light">
-                                            <span data-dock-type="text" data-dock-bind={`${sectionName}.${index}.${tk}`}>{item[tk]}</span>
+                                    {item.url && (
+                                        <div className="mt-8">
+                                            <a 
+                                                href={item.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                data-dock-type="link"
+                                                data-dock-bind={`${sectionName}.${index}.url`}
+                                                className="text-accent font-bold hover:underline flex items-center gap-2 text-xl"
+                                            >
+                                                <span>Bekijk Project</span>
+                                                <i className="fa-solid fa-arrow-right"></i>
+                                            </a>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
                             </div>
                         );

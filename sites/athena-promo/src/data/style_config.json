@@ -1,0 +1,98 @@
+[
+  {
+    "Key": "--color-primary",
+    "Value": "#0f172a"
+  },
+  {
+    "Key": "--color-secondary",
+    "Value": "#64748b"
+  },
+  {
+    "Key": "--color-accent",
+    "Value": "#3b82f6"
+  },
+  {
+    "Key": "--color-button-bg",
+    "Value": "#3b82f6"
+  },
+  {
+    "Key": "--color-card-bg",
+    "Value": "#ffffff"
+  },
+  {
+    "Key": "--color-header-bg",
+    "Value": "#ffffff"
+  },
+  {
+    "Key": "--color-background",
+    "Value": "#ffffff"
+  },
+  {
+    "Key": "--color-surface",
+    "Value": "#f8fafc"
+  },
+  {
+    "Key": "--color-text",
+    "Value": "#1e293b"
+  },
+  {
+    "Key": "--color-heading",
+    "Value": "#0f172a"
+  },
+  {
+    "Key": "--color-title",
+    "Value": "#0f172a"
+  },
+  {
+    "Key": "--font-sans",
+    "Value": "'Inter', ui-sans-serif, system-ui, sans-serif"
+  },
+  {
+    "Key": "--font-serif",
+    "Value": "'Playfair Display', ui-serif, Georgia, serif"
+  },
+  {
+    "Key": "--radius-custom",
+    "Value": "1rem"
+  },
+  {
+    "Key": "--shadow-main",
+    "Value": "0 4px 20px -2px rgba(0, 0, 0, 0.05)"
+  },
+  {
+    "Key": "--color-primary-rgb",
+    "Value": "15 23 42"
+  },
+  {
+    "Key": "--color-secondary-rgb",
+    "Value": "100 116 139"
+  },
+  {
+    "Key": "--color-accent-rgb",
+    "Value": "59 130 246"
+  },
+  {
+    "Key": "--color-background-rgb",
+    "Value": "255 255 255"
+  },
+  {
+    "Key": "--color-surface-rgb",
+    "Value": "248 250 252"
+  },
+  {
+    "Key": "--color-text-rgb",
+    "Value": "30 41 59"
+  },
+  {
+    "Key": "--color-heading-rgb",
+    "Value": "15 23 42"
+  },
+  {
+    "Key": "--color-title-rgb",
+    "Value": "15 23 42"
+  },
+  {
+    "Key": "--color-button-bg-rgb",
+    "Value": "59 130 246"
+  }
+]

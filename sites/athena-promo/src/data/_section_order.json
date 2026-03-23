@@ -1,11 +1,26 @@
 [
-  { "sectie": "header" },
-  { "sectie": "hero" },
-  { "sectie": "intro" },
-  { "sectie": "voordelen" },
-  { "sectie": "showcase" },
-  { "sectie": "innovatie" },
-  { "sectie": "proces" },
-  { "sectie": "contact" },
-  { "sectie": "footer" }
+  {
+    "sectie": "header"
+  },
+  {
+    "sectie": "hero"
+  },
+  {
+    "sectie": "intro"
+  },
+  {
+    "sectie": "voordelen"
+  },
+  {
+    "sectie": "showcase"
+  },
+  {
+    "sectie": "innovatie"
+  },
+  {
+    "sectie": "proces"
+  },
+  {
+    "sectie": "footer"
+  }
 ]
