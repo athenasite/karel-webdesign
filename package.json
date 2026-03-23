@@ -10,6 +10,8 @@
     "install:all": "pnpm install",
     "factory:start": "cd factory && pnpm start",
     "dock:start": "cd dock && pnpm dev",
-    "sites:build": "pnpm --recursive run build"
+    "sites:build": "pnpm --recursive run build",
+    "park": "bash factory/6-utilities/park-site.sh",
+    "retrieve": "bash factory/6-utilities/retrieve-site.sh"
   }
 }

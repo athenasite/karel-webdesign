@@ -57,7 +57,13 @@ jobs:
               BEFORE="HEAD~1"
             fi
             RAW_SITES=$(git diff --name-only "$BEFORE" ${{ github.event.after }} | grep -E '^(sites|sites-external)/' | cut -d/ -f2 | sort -u | tr -d '\r' | xargs)
-            CHANGED_SITES=$(echo "$RAW_SITES" | jq -R -s -c 'split(" ") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))')
+            VALID_SITES=""
+            for s in $RAW_SITES; do
+              if [ -d "sites/$s" ] || [ -d "sites-external/$s" ]; then
+                VALID_SITES="$VALID_SITES $s"
+              fi
+            done
+            CHANGED_SITES=$(echo "$VALID_SITES" | xargs | jq -R -s -c 'split(" ") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))')
           fi
           if [ "$CHANGED_SITES" = "[]" ] || [ -z "$CHANGED_SITES" ]; then
             echo "any_changed=false" >> $GITHUB_OUTPUT
@@ -94,13 +100,8 @@ jobs:
           # DYNAMISCHE TARGET ROUTING (v8.2)
           if [[ "${{ github.repository }}" == *"athena-x"* ]]; then
             TARGET_ORG="ath-x"
-            echo "🛠️ Development environment detected. Targeting organization: $TARGET_ORG"
-          elif [[ "${{ github.repository }}" == *"athena-y"* ]]; then
-            TARGET_ORG="athena-y-factory"
-            echo "🚀 Production (Y) environment detected. Targeting organization: $TARGET_ORG"
           else
             TARGET_ORG="athena-y-factory"
-            echo "🚀 Default (Y) environment detected. Targeting organization: $TARGET_ORG"
           fi
 
           if [ -d "sites/$SITE" ]; then
@@ -108,8 +109,10 @@ jobs:
           elif [ -d "sites-external/$SITE" ]; then
             PREFIX="sites-external/$SITE"
           else
-            exit 1
+            echo "⚠️ Site $SITE not found in monorepo (likely moved to Vault). Skipping."
+            exit 0
           fi
+          
           TARGET_REPO="$TARGET_ORG/$SITE"
           
           if ! gh repo view "$TARGET_REPO" >/dev/null 2>&1; then
@@ -119,19 +122,23 @@ jobs:
           fi
 
           REMOTE_URL="https://x-access-token:${API_TOKEN_GITHUB}@github.com/${TARGET_REPO}.git"
+          
+          # Force check if prefix exists in history for subtree split
+          if ! git log --format=oneline -- "$PREFIX" | head -n 1 > /dev/null; then
+             echo "⚠️ No history found for $PREFIX. Skipping subtree split."
+             exit 0
+          fi
+
           SPLIT_SHA=$(git subtree split --prefix=$PREFIX $BRANCH)
           git push "$REMOTE_URL" "$SPLIT_SHA":refs/heads/main --force
 
-          # KICKSTART gh-pages (Alleen als deze niet bestaat)
+          # KICKSTART gh-pages
           if ! gh api repos/$TARGET_REPO/branches/gh-pages >/dev/null 2>&1; then
-            echo "🌱 Creating gh-pages branch..."
-            gh api --method POST /repos/$TARGET_REPO/git/refs -f ref='refs/heads/gh-pages' -f sha="$SPLIT_SHA" || echo "Branch bestaat al of fout"
-            sleep 10
+            gh api --method POST /repos/$TARGET_REPO/git/refs -f ref='refs/heads/gh-pages' -f sha="$SPLIT_SHA" || true
+            sleep 5
           fi
 
-          # FAILSAFE Pages activatie (Alleen als deze niet aan staat)
+          # FAILSAFE Pages activatie
           if ! gh api repos/$TARGET_REPO/pages >/dev/null 2>&1; then
-            echo "🌐 Activating GitHub Pages..."
-            sleep 5
-            gh api --method POST /repos/$TARGET_REPO/pages -f source='{"branch": "gh-pages", "path": "/"}' || echo "Pages al actief of fout"
+            gh api --method POST /repos/$TARGET_REPO/pages -f source='{"branch": "gh-pages", "path": "/"}' || true
           fi

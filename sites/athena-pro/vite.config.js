@@ -9,29 +9,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(async ({ command }) => {
   const isDev = command === 'serve';
-  let athenaEditorPlugin = null;
+  
 
-  // De editor plugin is alleen nodig (en beschikbaar) tijdens lokale development
-  if (isDev) {
-    const pluginPath = path.resolve(__dirname, '../../factory/5-engine/lib/vite-plugin-athena-editor.js');
-    if (fs.existsSync(pluginPath)) {
-      try {
-        // Gebruik een variabele voor de import om statische analyse door esbuild in CI te voorkomen
-        const pluginModule = await import(`file://${pluginPath}`);
-        athenaEditorPlugin = pluginModule.default;
-      } catch (e) {
-        console.warn('⚠️ Athena Editor plugin kon niet worden geladen:', e.message);
-      }
-    }
-  }
-
+  // [Athena 3.0] Editor plugin logic removed for production stability
   return {
     // Gebruik relatieve paden voor maximale compatibiliteit (Dock & GitHub Pages)
-    base: process.env.NODE_ENV === 'production' ? '/athena-pro/' : '/', 
+    base: './', // [Athena 3.0] Forced relative base 
     plugins: [
       react(),
       tailwindcss(),
-      athenaEditorPlugin ? athenaEditorPlugin() : null
+      null
     ].filter(Boolean),
     server: {
       cors: true,
