@@ -118,7 +118,8 @@
     }
 
     .card {
-        @apply p-6 border; border-color: color-mix(in srgb, var(--color-text) 10%, transparent); transition-shadow hover:shadow-md;
+        @apply p-6 border transition-all duration-300 hover:shadow-md; 
+        border-color: color-mix(in srgb, var(--color-text) 10%, transparent); 
         background-color: var(--color-card-bg);
         border-radius: var(--radius-custom);
         box-shadow: var(--shadow-main);

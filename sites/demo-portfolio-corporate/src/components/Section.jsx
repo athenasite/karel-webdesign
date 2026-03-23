@@ -1,23 +1,10 @@
 import React, { useEffect } from 'react';
-
+import EditableText from './EditableText';
+import EditableMedia from './EditableMedia';
+import EditableLink from './EditableLink';
 
 const Section = ({ data }) => {
-        const getImageUrl = (url) => {
-    if (!url) return '';
-    if (typeof url === 'object') url = url.text || url.url || '';
-    if (url.startsWith('http') || url.startsWith('data:')) return url;
-    const base = import.meta.env.BASE_URL || '/';
-    if (url.startsWith(base) && base !== '/') return url;
-    const isRootPublic = url.startsWith('./') || url.endsWith('.svg') || url.endsWith('.ico') || url === 'site-logo.svg' || url === 'athena-icon.svg';
-    const hasImagesPrefix = url.includes('/images/') || url.startsWith('images/');
-    const pathPrefix = (isRootPublic || hasImagesPrefix) ? '' : 'images/';
-    return (base + pathPrefix + url.replace('./', '')).replace(new RegExp('/+', 'g'), '/');
-  };
-
-  
   const sectionOrder = data.section_order || [];
-
-  
 
   useEffect(() => {
     if (window.athenaScan) {
@@ -25,43 +12,61 @@ const Section = ({ data }) => {
     }
   }, [data, sectionOrder]);
 
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  const resolveContent = (item) => {
+    if (!item) return {};
+    return {
+      title: item.titel || item.naam || item.full_name || item.header || '',
+      subtitle: item.tagline || item.ondertitel || item.categorie || item.professional_title || '',
+      text: item.beschrijving || item.tekst || item.introductie || item.bio || '',
+      image: item.avatar_url || item.hero_afbeelding || item.foto_url || item.image_url || '',
+      cta: item.cta_text || item.button_text || 'Bekijk meer'
+    };
   };
 
   return (
     <div className="flex flex-col">
       {sectionOrder.map((sectionName, idx) => {
+        if (sectionName === 'site_settings' || sectionName === 'section_order') return null;
         const items = data[sectionName] || [];
         if (items.length === 0) return null;
 
-        if (sectionName === 'basisgegevens') {
-          const hero = items[0];
-          const heroTitle = hero.titel || hero.hero_header || hero.site_naam;
+        // Hero Special Handling
+        if (sectionName === 'profile' || sectionName === 'hero') {
+          const profile = items[0];
+          const content = resolveContent(profile);
+          
           return (
-            <section key={idx} id="hero" data-dock-section="basisgegevens" className="relative w-full h-auto min-h-[var(--hero-height,85vh)] max-h-[var(--hero-max-height,150vh)] aspect-[var(--hero-aspect-ratio,16/9)] flex items-center justify-center overflow-hidden">
+            <section key={idx} id="hero" data-dock-section={sectionName} className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900 border-b-8 border-[var(--color-accent)]">
               <div className="absolute inset-0 z-0">
-                <img src={getImageUrl(hero.hero_afbeelding || hero.foto_url)} className="w-full h-full object-cover object-top" data-dock-type="media" data-dock-bind="basisgegevens.0.hero.hero_afbeelding" />
-                <div className="absolute inset-0 z-20 pointer-events-none" style={{ 
-                  backgroundImage: 'linear-gradient(to bottom, var(--hero-overlay-start, rgba(0,0,0,0.6)), var(--hero-overlay-end, rgba(0,0,0,0.6)))' 
-                }}></div>
+                <EditableMedia 
+                  src={content.image} 
+                  cmsBind={{ file: sectionName, index: 0, key: 'avatar_url' }}
+                  className="w-full h-full object-cover opacity-60" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent"></div>
               </div>
-              <div className="relative z-10 text-center px-6 max-w-5xl">
-                <h1 className="text-5xl md:text-8xl font-serif font-bold text-white mb-8 leading-tight drop-shadow-2xl">
-                  <span data-dock-type="text" data-dock-bind="basisgegevens.0.hero.titel">{heroTitle}</span>
-                </h1>
-                <div className="h-2 w-32 bg-accent mx-auto mb-10 rounded-full shadow-lg shadow-accent/50"></div>
-                <div className="flex flex-col items-center gap-12">
-                    <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg font-light italic">
-                       <span data-dock-type="text" data-dock-bind="basisgegevens.0.hero.ondertitel">{hero.ondertitel || hero.introductie}</span>
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <button onClick={(e) => { 
-                if (e.shiftKey) return; 
-                const target = document.getElementById("contact");
-                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth" }); }
-            }} data-dock-type="link" data-dock-bind="site_settings.0.titel">{}</button>
-                        
+              <div className="relative z-10 text-left px-6 max-w-7xl w-full">
+                <div className="max-w-3xl">
+                    <h1 className="text-6xl md:text-8xl font-serif font-black text-white mb-8 leading-tight uppercase tracking-tighter">
+                      <EditableText value={content.title} cmsBind={{ file: sectionName, index: 0, key: 'full_name' }} />
+                    </h1>
+                    <div className="flex items-center gap-6 mb-12">
+                        <div className="h-0.5 flex-grow bg-white/30"></div>
+                        <p className="text-xl md:text-2xl text-[var(--color-accent)] font-bold uppercase tracking-[0.3em]">
+                           <EditableText value={content.subtitle} cmsBind={{ file: sectionName, index: 0, key: 'tagline' }} />
+                        </p>
+                    </div>
+                    <div className="flex gap-4">
+                        <EditableLink 
+                            label={content.cta} 
+                            url="#contact"
+                            cmsBind={{ file: sectionName, index: 0, key: 'cta_text' }}
+                            className="bg-white text-slate-900 px-12 py-5 rounded-none font-black uppercase tracking-widest hover:bg-[var(--color-accent)] hover:text-white transition-all shadow-2xl"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                        />
                     </div>
                 </div>
               </div>
@@ -69,88 +74,88 @@ const Section = ({ data }) => {
           );
         }
 
-        if (sectionName.includes('product') || sectionName.includes('shop')) {
-          return (
-            <section key={idx} id={sectionName} data-dock-section={sectionName} className="py-24 px-6 bg-background">
-              <div className="max-w-7xl mx-auto">
-                <h2 className="text-4xl font-serif font-bold mb-16 text-center text-primary uppercase tracking-widest">{sectionName.replace(/_/g, ' ')}</h2>
-                <div className="flex flex-wrap justify-center gap-12">
-                  {items.map((item, index) => {
-                    const priceValue = parseFloat(String(item.prijs || 0).replace(/[^0-9.,]/g, '').replace(',', '.'));
-                    const titleKey = Object.keys(item).find(k => /naam|titel/i.test(k)) || 'naam';
-                    const imgKey = Object.keys(item).find(k => /foto|afbeelding|url/i.test(k)) || 'product_foto_url';
-                    return (
-                      <article key={index} className="flex flex-col bg-surface rounded-[2.5rem] shadow-xl overflow-hidden transition-all hover:-translate-y-2 hover:shadow-2xl group border border-slate-100">
-                        <div className="aspect-square overflow-hidden flex-shrink-0 relative">
-                          <img src={getImageUrl(item[imgKey])} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-dock-type="media" data-dock-bind={`${sectionName}.0.${imgKey}`} />
-                          <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
+        // Projects / Portfolio Grid
+        if (sectionName === 'projects' || sectionName === 'portfolio') {
+            return (
+                <section key={idx} id={sectionName} data-dock-section={sectionName} className="py-32 px-6 bg-[var(--color-background)]">
+                  <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
+                        <div>
+                            <h2 className="text-5xl md:text-7xl font-serif font-black text-[var(--color-title)] uppercase tracking-tighter leading-none">{sectionName}</h2>
+                            <div className="h-4 w-48 bg-[var(--color-accent)] mt-4"></div>
                         </div>
-                        <div className="p-8 flex flex-col flex-grow text-center">
-                          <h3 className="text-2xl font-bold mb-4 text-primary min-h-[4rem] flex items-center justify-center">
-                            <span data-dock-type="text" data-dock-bind={`${sectionName}.0.${titleKey}`}>{item[titleKey]}</span>
-                          </h3>
-                          <div className="text-accent font-bold mt-auto text-3xl mb-6">€{priceValue.toFixed(2)}</div>
-                          <div className="flex flex-col gap-3">
-                            
-                            
-                          </div>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
+                        <p className="max-w-md text-slate-500 font-medium">Expertise en precisie in elk project dat we opleveren.</p>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-1 grid-flow-dense bg-slate-200 border border-slate-200">
+                      {items.map((item, index) => {
+                        const content = resolveContent(item);
+                        return (
+                          <article key={index} className="bg-white p-12 group transition-all hover:bg-slate-50 relative overflow-hidden w-full md:w-[calc(50%-0.25rem)] lg:w-[calc(33.333%-0.5rem)]">
+                            <div className="absolute top-0 right-0 p-4 text-slate-100 text-6xl font-black">0{index + 1}</div>
+                            <div className="relative z-10 space-y-6">
+                               <div className="text-[var(--color-accent)] font-black uppercase tracking-widest text-xs">{content.subtitle}</div>
+                               <h3 className="text-3xl font-serif font-black text-[var(--color-heading)] uppercase leading-none">
+                                 <EditableText value={content.title} cmsBind={{ file: sectionName, index, key: 'titel' }} />
+                               </h3>
+                               <p className="text-slate-500 font-medium leading-relaxed">
+                                 <EditableText value={content.text} cmsBind={{ file: sectionName, index, key: 'beschrijving' }} />
+                               </p>
+                               <EditableLink 
+                                    label="Project Dossier" 
+                                    url="#" 
+                                    className="inline-flex items-center text-slate-900 font-black uppercase tracking-widest text-sm border-b-4 border-[var(--color-accent)] pb-1 hover:pr-4 transition-all"
+                               />
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+            );
         }
 
+        // Default Alternating Layout
+        const isEven = idx % 2 === 0;
         return (
-          <section key={idx} id={sectionName} data-dock-section={sectionName} className={'py-24 px-6 ' + (idx % 2 === 1 ? 'bg-slate-50' : 'bg-white')}>
-            <div className="max-w-6xl mx-auto">
-              <div className="flex flex-col items-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary text-center mb-4 capitalize">
-                  {sectionName.replace(/_/g, ' ')}
-                </h2>
-                <div className="h-1.5 w-24 bg-accent rounded-full"></div>
-              </div>
-              
-              <div className="space-y-20">
-                {items.map((item, index) => {
-                   const titleKey = Object.keys(item).find(k => /naam|titel|onderwerp|header/i.test(k));
-                   const textKeys = Object.keys(item).filter(k => k !== titleKey && !/foto|afbeelding|url|link|id/i.test(k));
-                   const imgKey = Object.keys(item).find(k => /foto|afbeelding|url/i.test(k));
-                   const isEven = index % 2 === 0;
-
-                   return (
-                     <div key={index} className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-20 items-center`}>
-                       {imgKey && item[imgKey] && (
-                         <div className="w-full md:w-1/2 aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl rotate-1 group hover:rotate-0 transition-transform duration-500 border-8 border-white">
-                           <img src={getImageUrl(item[imgKey])} className="w-full h-full object-cover" data-dock-type="media" data-dock-bind={`${sectionName}.0.${imgKey}`} />
+          <section key={idx} id={sectionName} data-dock-section={sectionName} className={`py-40 px-6 ${isEven ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-background)]'}`}>
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div className={idx % 2 === 1 ? 'lg:order-2' : ''}>
+                    <div className="relative">
+                        <div className="absolute -top-12 -left-12 w-48 h-48 bg-[var(--color-accent)]/10 -z-10"></div>
+                        <div className="aspect-[4/5] overflow-hidden shadow-[40px_40px_0px_0px_rgba(0,0,0,0.05)]">
+                             <EditableMedia 
+                                src={resolveContent(items[0]).image} 
+                                cmsBind={{ file: sectionName, index: 0, key: 'image_url' }}
+                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
+                             />
+                        </div>
+                    </div>
+                </div>
+                <div className="space-y-12">
+                   <div className="inline-block px-6 py-2 bg-slate-900 text-white font-black uppercase tracking-widest text-xs">Architectuur</div>
+                   <h2 className="text-5xl md:text-7xl font-serif font-black text-[var(--color-title)] uppercase tracking-tighter leading-[0.9]">
+                      <EditableText value={sectionName.replace(/_/g, ' ')} cmsBind={{ file: 'section_order', index: idx, key: '0' }} />
+                   </h2>
+                   
+                   <div className="space-y-16">
+                    {items.map((item, index) => {
+                       const content = resolveContent(item);
+                       return (
+                         <div key={index} className="space-y-6">
+                            <h3 className="text-2xl font-bold text-[var(--color-heading)] uppercase tracking-tight">
+                                <EditableText value={content.title} cmsBind={{ file: sectionName, index, key: 'titel' }} />
+                            </h3>
+                            <p className="text-xl leading-relaxed text-slate-500 font-medium">
+                                <EditableText value={content.text} cmsBind={{ file: sectionName, index, key: 'beschrijving' }} />
+                            </p>
+                            <EditableLink label={content.cta} url="#" className="text-[var(--color-accent)] font-black uppercase tracking-widest text-sm hover:underline" />
                          </div>
-                       )}
-                       <div className="flex-1 text-center md:text-left">
-                         {titleKey && (
-                           <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
-                               <h3 className="text-3xl font-serif font-bold text-primary leading-tight flex-1">
-                                 <span data-dock-type="text" data-dock-bind={`${sectionName}.0.${titleKey}`}>{item[titleKey]}</span>
-                               </h3>
-                               
-                           </div>
-                         )}
-                         {textKeys.map(tk => (
-                           <div key={tk} className="text-xl leading-relaxed text-slate-600 mb-6 font-light">
-                             <span data-dock-type="text" data-dock-bind={`${sectionName}.0.${tk}`}>{item[tk]}</span>
-                           </div>
-                         ))}
-                         {(item.link || item.link_url) && (
-                            <a href={"#"} data-dock-type="link" data-dock-bind="site_settings.0.titel">
-                                {item.link || "Lees meer"} <i className="fa-solid fa-arrow-right text-sm ml-1"></i>
-                            </a>
-                         )}
-                       </div>
-                     </div>
-                   );
-                })}
+                       );
+                    })}
+                   </div>
+                </div>
               </div>
             </div>
           </section>

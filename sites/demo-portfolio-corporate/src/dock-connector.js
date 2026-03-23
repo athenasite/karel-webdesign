@@ -99,6 +99,36 @@
     window.addEventListener('message', async (event) => {
         const { type, key, value, section, direction, file, index } = event.data;
 
+        // Handle sync request from Editor (v33 standard)
+        if (type === 'DOCK_REQUEST_SYNC') {
+            try {
+                const el = document.querySelector(`[data-dock-bind="${file}.${index}.${key}"]`);
+                if (el) {
+                    const dockType = el.getAttribute('data-dock-type');
+                    let currentValue = el.getAttribute('data-dock-current') || el.innerText;
+                    
+                    if (dockType === 'media') {
+                        const img = el.tagName === 'IMG' ? el : el.querySelector('img, video');
+                        if (img) currentValue = img.getAttribute('src');
+                    } else if (dockType === 'link') {
+                        currentValue = {
+                            label: el.getAttribute('data-dock-label') || el.innerText,
+                            url: el.getAttribute('data-dock-url') || ""
+                        };
+                    }
+
+                    window.parent.postMessage({
+                        type: 'SITE_SYNC_RESPONSE',
+                        key: key,
+                        value: currentValue
+                    }, '*');
+                }
+            } catch (e) {
+                console.warn("Sync failed:", e);
+            }
+            return;
+        }
+
         // Color Update
         if (type === 'DOCK_UPDATE_COLOR') {
             const isDark = document.documentElement.classList.contains('dark');

@@ -1,0 +1,292 @@
+{
+  "display_config": {
+    "site_name": "demo-portfolio"
+  },
+  "layout_settings": {
+    "site_name": "demo-portfolio"
+  },
+  "navigation": [
+    {
+      "label": "Over Mij",
+      "url": "#hero"
+    },
+    {
+      "label": "Projecten",
+      "url": "#projects"
+    },
+    {
+      "label": "Diensten",
+      "url": "#services"
+    },
+    {
+      "label": "Contact",
+      "url": "#contact"
+    }
+  ],
+  "profile": [
+    {
+      "full_name": "Karel",
+      "tagline": "Architect van Digitale Oplossingen.",
+      "professional_title": "Full Stack Developer & AI Integrator",
+      "bio_short": "Expert in het bouwen van schaalbare ecosystemen op Chromebook hardware.",
+      "bio_long": "Mijn passie ligt bij het omzetten van complexe problemen naar eenvoudige, bruikbare tools. Met Athena CMS Factory heb ik bewezen dat je met beperkte middelen grenzeloze resultaten kunt boeken.",
+      "avatar_url": "",
+      "contact_email": "karel@athena-pro.be",
+      "cta_text": "Neem Contact Op"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Athena CMS Factory",
+      "category": "AI / Web Automation",
+      "summary": "Een headless CMS engine aangedreven door Google Sheets en AI.",
+      "description": "Dit systeem automatiseert de volledige lifecycle van een website, van content parsing tot cloud deployment.",
+      "tech_stack": "Node.js, React, Vite, Gemini AI, Git",
+      "demo_url": "",
+      "repo_url": "",
+      "image_url": "",
+      "status": "Live"
+    },
+    {
+      "title": "Project Hydra (MPA Engine)",
+      "category": "Web Scraping / Data",
+      "summary": "Een engine voor het genereren van Multi-Page Applications uit gescrapte data.",
+      "description": "Ontworpen voor grote informatieve sites zoals het FPC Gent archief.",
+      "tech_stack": "Cheerio, React Router, Vite",
+      "demo_url": "",
+      "repo_url": "",
+      "image_url": "",
+      "status": "Beta"
+    }
+  ],
+  "schema": {
+    "blueprint_name": "karel-portfolio-ath",
+    "track": "docked",
+    "notes": "Hybrid sitetype (Semi-Autonomous). Optimized for manual athenafication from existing codebases. Includes SectionToolbar and dynamic rendering logic.",
+    "data_structure": [
+      {
+        "table_name": "site_settings",
+        "columns": [
+          {
+            "name": "site_title",
+            "description": "Titel van de website."
+          },
+          {
+            "name": "site_description",
+            "description": "Meta beschrijving van de site."
+          },
+          {
+            "name": "contact_email",
+            "description": "Algemeen contact e-mailadres."
+          },
+          {
+            "name": "logo_text",
+            "description": "Tekst voor het logo."
+          },
+          {
+            "name": "theme",
+            "description": "dark of light"
+          }
+        ]
+      },
+      {
+        "table_name": "profile",
+        "columns": [
+          {
+            "name": "full_name",
+            "description": "Naam van de persoon."
+          },
+          {
+            "name": "tagline",
+            "description": "Korte slogan."
+          },
+          {
+            "name": "professional_title",
+            "description": "Bv. Full Stack Developer."
+          },
+          {
+            "name": "bio_short",
+            "description": "Intro voor de hero."
+          },
+          {
+            "name": "bio_long",
+            "description": "Lange bio voor de about sectie."
+          },
+          {
+            "name": "avatar_url",
+            "description": "URL naar profielfoto."
+          },
+          {
+            "name": "contact_email",
+            "description": "E-mailadres voor contact."
+          },
+          {
+            "name": "cta_text",
+            "description": "Tekst op de knop."
+          }
+        ]
+      },
+      {
+        "table_name": "projects",
+        "columns": [
+          {
+            "name": "title",
+            "description": "Projectnaam."
+          },
+          {
+            "name": "category",
+            "description": "Bv. Web, App, AI."
+          },
+          {
+            "name": "summary",
+            "description": "Korte samenvatting."
+          },
+          {
+            "name": "description",
+            "description": "Gedetailleerde beschrijving."
+          },
+          {
+            "name": "tech_stack",
+            "description": "Komma-gescheiden technologieën."
+          },
+          {
+            "name": "demo_url",
+            "description": "Link naar demo."
+          },
+          {
+            "name": "repo_url",
+            "description": "Link naar GitHub."
+          },
+          {
+            "name": "image_url",
+            "description": "Project screenshot URL."
+          },
+          {
+            "name": "status",
+            "description": "Live, In Progress, etc."
+          }
+        ]
+      },
+      {
+        "table_name": "services",
+        "columns": [
+          {
+            "name": "title",
+            "description": "Naam van de dienst."
+          },
+          {
+            "name": "description",
+            "description": "Uitleg van de dienst."
+          },
+          {
+            "name": "icon_name",
+            "description": "Icoon naam (Lucide)."
+          }
+        ]
+      },
+      {
+        "table_name": "testimonials",
+        "columns": [
+          {
+            "name": "client_name",
+            "description": "Naam van de klant."
+          },
+          {
+            "name": "company",
+            "description": "Bedrijf van de klant."
+          },
+          {
+            "name": "quote",
+            "description": "De testimonial tekst."
+          }
+        ]
+      },
+      {
+        "table_name": "socials",
+        "columns": [
+          {
+            "name": "platform",
+            "description": "Bv. LinkedIn."
+          },
+          {
+            "name": "url",
+            "description": "Link naar profiel."
+          },
+          {
+            "name": "icon",
+            "description": "Icoon naam."
+          }
+        ]
+      }
+    ],
+    "design_system": {
+      "colors": {
+        "primary": "#3b82f6",
+        "secondary": "#050505",
+        "accent": "#f59e0b",
+        "background": "#050505",
+        "surface": "#111111"
+      },
+      "radius": "1.5rem",
+      "font_sans": "Inter, system-ui, sans-serif"
+    }
+  },
+  "section_order": [
+    "profile",
+    "projects",
+    "services",
+    "testimonials",
+    "socials"
+  ],
+  "section_settings": {
+    "site_name": "demo-portfolio"
+  },
+  "services": [
+    {
+      "title": "Webontwikkeling",
+      "description": "Snelle, responsieve en SEO-geoptimaliseerde websites.",
+      "icon_name": "Code"
+    },
+    {
+      "title": "AI Automatisatie",
+      "description": "Integreer slimme AI workflows in uw bestaande bedrijfsmodellen.",
+      "icon_name": "Brain"
+    },
+    {
+      "title": "Re-integratie Advies (IT)",
+      "description": "Strategieën voor het opbouwen van een IT-carrière na een onderbreking.",
+      "icon_name": "GraduationCap"
+    }
+  ],
+  "site_settings": [
+    {
+      "site_title": "Karel - Portfolio Demo",
+      "site_description": "",
+      "contact_email": "karel@athena-pro.be",
+      "logo_text": "",
+      "theme": "dark",
+      "hero_height": "85vh",
+      "hero_max_height": "150vh",
+      "hero_aspect_ratio": "16/9",
+      "site_logo_image": "/site-logo.svg"
+    }
+  ],
+  "socials": [
+    {
+      "[object Object]": ""
+    }
+  ],
+  "style_bindings": {
+    "site_name": "demo-portfolio"
+  },
+  "style_config": {
+    "site_name": "demo-portfolio",
+    "light_primary_color": "#d24141",
+    "light_header_color": "#ea3939"
+  },
+  "testimonials": [
+    {
+      "[object Object]": ""
+    }
+  ]
+}

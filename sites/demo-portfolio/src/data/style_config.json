@@ -1,1 +1,5 @@
-{"site_name": "demo-portfolio"}
+{
+  "site_name": "demo-portfolio",
+  "light_primary_color": "#d24141",
+  "light_header_color": "#ea3939"
+}

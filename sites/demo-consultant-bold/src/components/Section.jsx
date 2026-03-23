@@ -52,10 +52,9 @@ const Section = ({ data }) => {
           const hero = items[0];
           const heroTitle = hero.title || hero.titel || hero.hero_header || hero.site_naam;
           const heroSubtitle = hero.subtitle || hero.ondertitel || hero.introductie;
+          const titleKey = Object.keys(hero).find(k => /title|titel|naam|header|site_naam/i.test(k)) || 'title';
+          const subtitleKey = Object.keys(hero).find(k => /subtitle|ondertitel|introductie/i.test(k)) || 'subtitle';
           const imgKey = Object.keys(hero).find(k => /foto|afbeelding|url|image|img/i.test(k)) || 'image';
-          
-          const titleKey = Object.keys(hero).find(k => k === 'title' || k === 'titel' || k === 'hero_header' || k === 'site_naam') || 'title';
-          const subtitleKey = Object.keys(hero).find(k => k === 'subtitle' || k === 'ondertitel' || k === 'introductie') || 'subtitle';
 
           return (
             <section 

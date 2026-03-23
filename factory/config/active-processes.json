@@ -1,9 +1,9 @@
 {
   "5002": {
-    "pid": 23538,
+    "pid": 14088,
     "id": "athena-dock",
     "type": "dock",
-    "startTime": "2026-03-23T12:59:43.635Z",
+    "startTime": "2026-03-23T15:56:09.501Z",
     "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/athena-dock-dock.log"
   },
   "5004": {
@@ -13,11 +13,11 @@
     "startTime": "2026-03-23T12:44:28.653Z",
     "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/media-mapper-editor.log"
   },
-  "5089": {
-    "pid": 5959,
-    "id": "demo-consultant-classic",
+  "5736": {
+    "pid": 9435,
+    "id": "demo-portfolio",
     "type": "preview",
-    "startTime": "2026-03-23T15:40:15.079Z",
-    "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/demo-consultant-classic-preview.log"
+    "startTime": "2026-03-23T15:52:01.786Z",
+    "logFile": "/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/factory/output/logs/demo-portfolio-preview.log"
   }
 }
