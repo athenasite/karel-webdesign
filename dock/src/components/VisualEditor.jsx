@@ -185,7 +185,7 @@ const VisualEditor = (props) => {
                                     </select>
                                     <i className="fa-solid fa-chevron-down absolute right-2 top-3 text-[8px] text-slate-400 pointer-events-none"></i>
                                 </div>
-                                <input type="number" value={parseInt(textStyles.fontSize)} onChange={(e) => setTextStyles(s => ({ ...s, fontSize: e.target.value }))} className="w-16 p-2 border border-slate-300 rounded font-bold text-xs" placeholder="PX" />
+                                <input type="number" value={isNaN(parseInt(textStyles.fontSize)) ? '' : parseInt(textStyles.fontSize)} onChange={(e) => setTextStyles(s => ({ ...s, fontSize: e.target.value }))} className="w-16 p-2 border border-slate-300 rounded font-bold text-xs" placeholder="PX" />
                             </div>
                             <div className="flex gap-2">
                                 <input type="color" value={textStyles.color || '#000000'} onChange={(e) => setTextStyles(s => ({ ...s, color: e.target.value }))} className="w-10 h-10 rounded cursor-pointer border border-slate-300 bg-white p-1" />
@@ -205,11 +205,11 @@ const VisualEditor = (props) => {
                             <div className="grid grid-cols-2 gap-2">
                                 <div className="space-y-1">
                                     <label className="text-[8px] font-black uppercase text-slate-400">Pad Top</label>
-                                    <input type="number" value={textStyles.paddingTop} onChange={(e) => setTextStyles(s => ({ ...s, paddingTop: parseInt(e.target.value) }))} className="w-full p-2 border border-slate-300 rounded text-xs font-bold" />
+                                    <input type="number" value={isNaN(parseInt(textStyles.paddingTop)) ? '' : parseInt(textStyles.paddingTop)} onChange={(e) => setTextStyles(s => ({ ...s, paddingTop: parseInt(e.target.value) || 0 }))} className="w-full p-2 border border-slate-300 rounded text-xs font-bold" />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[8px] font-black uppercase text-slate-400">Pad Bottom</label>
-                                    <input type="number" value={textStyles.paddingBottom} onChange={(e) => setTextStyles(s => ({ ...s, paddingBottom: parseInt(e.target.value) }))} className="w-full p-2 border border-slate-300 rounded text-xs font-bold" />
+                                    <input type="number" value={isNaN(parseInt(textStyles.paddingBottom)) ? '' : parseInt(textStyles.paddingBottom)} onChange={(e) => setTextStyles(s => ({ ...s, paddingBottom: parseInt(e.target.value) || 0 }))} className="w-full p-2 border border-slate-300 rounded text-xs font-bold" />
                                 </div>
                             </div>
                         </div>

@@ -36,9 +36,15 @@ const Section = ({ data }) => {
       {sectionOrder.map((sectionName, idx) => {
         const items = data[sectionName] || [];
         const allSettings = data.section_settings || [];
-        const settings = (Array.isArray(allSettings)
-          ? allSettings.find(s => s.id === sectionName)
-          : (allSettings[sectionName] || (allSettings[idx] && allSettings[idx].id === sectionName ? allSettings[idx] : {}))) || {};
+        let settingIndex = -1;
+        let settings = {};
+
+        if (Array.isArray(allSettings)) {
+          settingIndex = allSettings.findIndex(s => s.id === sectionName);
+          settings = settingIndex !== -1 ? allSettings[settingIndex] : {};
+        } else {
+          settings = allSettings[sectionName] || {};
+        }
         
         const sectionStyle = {
           backgroundColor: settings.bg_color || undefined
@@ -104,7 +110,7 @@ const Section = ({ data }) => {
               <div className="max-w-7xl mx-auto">
                 <div className="mb-20 text-center lg:text-left">
                    <h2 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-6">
-                     <EditableText value={settings.title || 'Expertise'} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                     <EditableText value={settings.title || 'Expertise'} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                    </h2>
                    <div className="w-20 h-1.5 bg-[var(--color-primary)] rounded-full mx-auto lg:mx-0"></div>
                 </div>
@@ -144,7 +150,7 @@ const Section = ({ data }) => {
               <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-24">
                    <h2 className="text-4xl md:text-5xl font-sans font-bold text-slate-900 mb-6">
-                     <EditableText value={settings.title || 'Innovative Results'} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                     <EditableText value={settings.title || 'Innovative Results'} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                    </h2>
                    <div className="w-20 h-1.5 bg-[var(--color-primary)] rounded-full mx-auto mb-6"></div>
                    <p className="text-lg text-slate-500 max-w-2xl mx-auto font-light">
@@ -193,7 +199,7 @@ const Section = ({ data }) => {
           <section key={idx} id={sectionName} data-dock-section={sectionName} className={`${sectionClasses} border-t border-slate-50`} style={sectionStyle}>
             <div className="max-w-4xl mx-auto p-16 bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-3xl text-center">
               <h2 className="text-3xl font-bold mb-4 text-slate-900 uppercase tracking-tight">
-                <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
               </h2>
               <div className="w-12 h-1 bg-[var(--color-primary)] mx-auto mb-8 rounded-full"></div>
               <p className="text-slate-400 font-medium italic">Discover or configure this enterprise data block via the Athena Dock.</p>

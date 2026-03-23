@@ -252,15 +252,43 @@
     },
     {
       "id": "packages",
-      "title": "Pakketten",
+      "title": {
+        "text": "Pakketten",
+        "color": "#d4d4d4",
+        "fontSize": "",
+        "fontWeight": "normal",
+        "fontStyle": "normal",
+        "textAlign": "left",
+        "fontFamily": "",
+        "shadowX": 0,
+        "shadowY": 0,
+        "shadowBlur": 0,
+        "shadowColor": "rgba(0,0,0,0.5)",
+        "paddingTop": 0,
+        "paddingBottom": 0
+      },
       "subtitle": "Cloud oplossingen",
       "bg_color": "#000000",
-      "card_bg_color": "#111111",
+      "card_bg_color": "#6a6868",
       "text_white": true
     },
     {
       "id": "projects",
-      "title": "Projecten",
+      "title": {
+        "text": "Projecten",
+        "color": "#000000",
+        "fontSize": "",
+        "fontWeight": "bold",
+        "fontStyle": "normal",
+        "textAlign": "left",
+        "fontFamily": "",
+        "shadowX": 0,
+        "shadowY": 0,
+        "shadowBlur": 0,
+        "shadowColor": "rgba(0,0,0,0.5)",
+        "paddingTop": 0,
+        "paddingBottom": 0
+      },
       "subtitle": "Onze successen",
       "bg_color": "",
       "card_bg_color": "#ffffff"
@@ -276,6 +304,8 @@
   ],
   "style_bindings": {
     "site_name": "cloud-architects",
-    "hero:0:titel": {}
+    "hero:0:titel": {},
+    "section_settings:3:title": {},
+    "section_settings:2:title": {}
   }
 }

@@ -38,9 +38,15 @@ const Section = ({ data }) => {
 
         // Geavanceerde Sectie-instellingen (v8.6+)
         const allSettings = data.section_settings || [];
-        const settings = (Array.isArray(allSettings) 
-          ? allSettings.find(s => s.id === sectionName) 
-          : (allSettings[sectionName] || (allSettings[idx] && allSettings[idx].id === sectionName ? allSettings[idx] : {}))) || {};
+        let settingIndex = -1;
+        let settings = {};
+
+        if (Array.isArray(allSettings)) {
+          settingIndex = allSettings.findIndex(s => s.id === sectionName);
+          settings = settingIndex !== -1 ? allSettings[settingIndex] : {};
+        } else {
+          settings = allSettings[sectionName] || {};
+        }
 
         const sectionStyles = {
           backgroundColor: settings.bg_color || undefined,
@@ -105,7 +111,7 @@ const Section = ({ data }) => {
                <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-24">
                   <h2 className="text-5xl md:text-7xl font-serif font-black tracking-tighter uppercase mb-6">
-                     <EditableText value={settings.title || 'Solutions'} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                     <EditableText value={settings.title || 'Solutions'} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                   </h2>
                   <div className="h-2 w-24 bg-accent mx-auto"></div>
                 </div>
@@ -158,7 +164,7 @@ const Section = ({ data }) => {
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col items-center mb-24 text-center">
                 <h2 className="text-5xl md:text-7xl font-serif font-black tracking-tighter uppercase mb-6">
-                  <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                  <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                 </h2>
                 <div className="h-2 w-24 bg-accent"></div>
               </div>

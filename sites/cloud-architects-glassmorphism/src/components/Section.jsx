@@ -50,9 +50,15 @@ const Section = ({ data }) => {
         if (items.length === 0 && sectionName !== 'hero') return null;
 
         const allSettings = data.section_settings || [];
-        const settings = (Array.isArray(allSettings)
-          ? allSettings.find(s => s.id === sectionName)
-          : (allSettings[sectionName] || (allSettings[idx] && allSettings[idx].id === sectionName ? allSettings[idx] : {}))) || {};
+        let settingIndex = -1;
+        let settings = {};
+
+        if (Array.isArray(allSettings)) {
+          settingIndex = allSettings.findIndex(s => s.id === sectionName);
+          settings = settingIndex !== -1 ? allSettings[settingIndex] : {};
+        } else {
+          settings = allSettings[sectionName] || {};
+        }
 
         const sectionStyles = {
           backgroundColor: settings.bg_color || undefined,
@@ -108,7 +114,7 @@ const Section = ({ data }) => {
                <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-24">
                   <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                     <EditableText value={settings.title || 'Solutions'} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                     <EditableText value={settings.title || 'Solutions'} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                   </h2>
                   <div className="h-1.5 w-24 bg-white/20 mx-auto rounded-full"></div>
                 </div>
@@ -163,7 +169,7 @@ const Section = ({ data }) => {
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col items-center mb-20 text-center">
                    <h2 className="text-4xl md:text-6xl font-serif font-bold text-primary mb-6 capitalize">
-                     <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                     <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                    </h2>
                    <div className="w-24 h-1.5 bg-accent rounded-full opacity-50"></div>
                 </div>
@@ -216,7 +222,7 @@ const Section = ({ data }) => {
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col items-center mb-20 text-center">
                   <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                    <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: idx, key: 'title' }} />
+                    <EditableText value={settings.title || sectionName} cmsBind={{ file: 'section_settings', index: settingIndex, key: 'title' }} />
                   </h2>
                   <div className="h-1.5 w-24 bg-white/20 rounded-full"></div>
                 </div>

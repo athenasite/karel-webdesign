@@ -36,9 +36,15 @@ const Section = ({ data }) => {
       {sectionOrder.map((sectionName, idx) => {
         const items = data[sectionName] || [];
         const allSettings = data.section_settings || [];
-        const settings = (Array.isArray(allSettings)
-          ? allSettings.find(s => s.id === sectionName)
-          : (allSettings[sectionName] || (allSettings[idx] && allSettings[idx].id === sectionName ? allSettings[idx] : {}))) || {};
+        let settingIndex = -1;
+        let settings = {};
+
+        if (Array.isArray(allSettings)) {
+          settingIndex = allSettings.findIndex(s => s.id === sectionName);
+          settings = settingIndex !== -1 ? allSettings[settingIndex] : {};
+        } else {
+          settings = allSettings[sectionName] || {};
+        }
         
         const sectionStyle = {
           backgroundColor: settings.bg_color || undefined
