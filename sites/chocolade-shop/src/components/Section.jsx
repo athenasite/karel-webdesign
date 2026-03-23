@@ -118,12 +118,12 @@ const Section = ({ data }) => {
             <section 
               key={idx} 
               data-dock-section="sterke_punten"
-              className="py-24 bg-black text-white"
+              className="py-24 bg-[#1a365d] text-white"
             >
               <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16">
                 {items.map((item, index) => (
                   <div key={index} className="flex flex-col items-center text-center">
-                    <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mb-6 border border-accent/30 text-accent">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-6 border border-accent/20 text-accent">
                        <i className={`fa-solid ${item.icoon_naam || 'fa-star'} text-3xl`}></i>
                     </div>
                     <h4 className="text-xl font-bold mb-2">

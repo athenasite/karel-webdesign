@@ -42,5 +42,17 @@
   "_links_config": {
     "editUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/edit#gid=1155403627",
     "exportUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/export?format=tsv&gid=1155403627"
+  },
+  "footer": {
+    "editUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/edit#gid=1557467596",
+    "exportUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/export?format=tsv&gid=1557467596"
+  },
+  "hero": {
+    "editUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/edit#gid=1711608548",
+    "exportUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/export?format=tsv&gid=1711608548"
+  },
+  "klantbeoordelingen": {
+    "editUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/edit#gid=1780316231",
+    "exportUrl": "https://docs.google.com/spreadsheets/d/15k70LMewRYTxIsvr6iRPHOG7uydltmEmwL489c5DRRg/export?format=tsv&gid=1780316231"
   }
 }

@@ -17,11 +17,11 @@ async function init() {
     
     // Load standard sections
     data['section_order'] = getData('section_order') || [];
-    data['site_settings'] = getData('site_settings') || {};
-    data['_site_settings'] = getData('_site_settings')?.[0] || getData('site_settings')?.[0] || {};
+    data['_style_config'] = getData('_style_config')?.[0] || getData('style_config')?.[0] || {};
+    data['site_settings'] = data['_style_config']; // Fallback for components using 'site_settings'
+    data['_site_settings'] = getData('_site_settings')?.[0] || {};
     data['display_config'] = getData('display_config') || { sections: {} };
     data['layout_settings'] = getData('layout_settings') || {};
-    data['style_config'] = getData('style_config') || {};
     data['section_settings'] = getData('section_settings') || {};
     data['style_bindings'] = getData('style_bindings') || {};
 
