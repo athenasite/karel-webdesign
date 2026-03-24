@@ -12,13 +12,11 @@ const __dirname = path.dirname(__filename);
 
 const FACTORY_ROOT = path.resolve(__dirname, '../..');
 const SITES_DIR = path.join(FACTORY_ROOT, 'sites');
-const VAULT_ROOT = path.resolve(FACTORY_ROOT, '../athena-vault-v8-1');
-const VAULT_SITES = path.join(VAULT_ROOT, 'sites');
 const OUTPUT_FILE = path.join(FACTORY_ROOT, 'dock/public/sites.json');
 const PORTS_FILE = path.join(FACTORY_ROOT, 'factory/config/site-ports.json');
 
 async function syncRegistry() {
-    console.log("🔍 Scanning Factory & Vault for sites...");
+    console.log("🔍 Scanning Factory for sites...");
     
     // Load existing ports
     let portMap = {};
@@ -28,15 +26,13 @@ async function syncRegistry() {
 
     const registry = [];
 
-    // Helper function to scan a directory
-    const scanDir = (dir, isVault) => {
-        if (!fs.existsSync(dir)) return;
-        const items = fs.readdirSync(dir).filter(f => 
-            fs.statSync(path.join(dir, f)).isDirectory() && !f.startsWith('.')
+    if (fs.existsSync(SITES_DIR)) {
+        const items = fs.readdirSync(SITES_DIR).filter(f => 
+            fs.statSync(path.join(SITES_DIR, f)).isDirectory() && !f.startsWith('.')
         );
 
         for (const project of items) {
-            const projectPath = path.join(dir, project);
+            const projectPath = path.join(SITES_DIR, project);
             const deployPath = path.join(projectPath, 'project-settings/deployment.json');
             const configPath = path.join(projectPath, 'athena-config.json');
             
@@ -64,33 +60,20 @@ async function syncRegistry() {
                 liveUrl: deployData.liveUrl || null,
                 localUrl: localUrl,
                 port: port,
-                status: isVault ? 'parked' : (deployData.status || 'local')
+                status: deployData.status || 'local'
             });
         }
-    };
-
-    scanDir(SITES_DIR, false);
-    scanDir(VAULT_SITES, true);
-
-    // Deduplicate (Factory wins if same ID exists in both, which shouldn't happen)
-    const uniqueRegistry = [];
-    const seen = new Set();
-    registry.forEach(site => {
-        if (!seen.has(site.id)) {
-            uniqueRegistry.push(site);
-            seen.add(site.id);
-        }
-    });
+    }
 
     // Sort: live first, then alphabetical
-    uniqueRegistry.sort((a, b) => {
-        if (a.status === 'parked' && b.status !== 'parked') return 1;
-        if (a.status !== 'parked' && b.status === 'parked') return -1;
+    registry.sort((a, b) => {
+        if (a.liveUrl && !b.liveUrl) return -1;
+        if (!a.liveUrl && b.liveUrl) return 1;
         return a.id.localeCompare(b.id);
     });
 
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(uniqueRegistry, null, 2));
-    console.log(`✅ Registry updated with ${uniqueRegistry.length} sites (${uniqueRegistry.filter(s => s.status === 'parked').length} parked).`);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(registry, null, 2));
+    console.log(`✅ Registry updated with ${registry.length} factory sites.`);
 }
 
 syncRegistry().catch(err => console.error(err));

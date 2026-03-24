@@ -97,13 +97,9 @@ jobs:
           SITE="${{ matrix.site }}"
           BRANCH="${{ github.ref_name }}"
           
-          # DYNAMISCHE TARGET ROUTING (v8.2)
-          if [[ "${{ github.repository }}" == *"athena-x"* ]]; then
-            TARGET_ORG="ath-x"
-          else
-            TARGET_ORG="athena-y-factory"
-          fi
-
+          # DYNAMISCHE TARGET ROUTING (v8.8 - Organized)
+          TARGET_ORG="athenasite"
+          
           if [ -d "sites/$SITE" ]; then
             PREFIX="sites/$SITE"
           elif [ -d "sites-external/$SITE" ]; then

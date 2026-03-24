@@ -42,14 +42,6 @@ To ensure maximum clarity and safety, every site follows a strict mapping:
     *   **SPA (Single-Page)**: One main component routing down. Default for merchants.
     *   **MPA (Multi-Page)**: Utilizes `react-router-dom` 7. For institutions/complex services.
 
-## 🏦 Vault & Cold Storage Integrity (Architectural Mandate)
-The Vault (`../athena-vault-v8-1/`) is a **Cold Storage** environment. To ensure 100% safety and data integrity, the following rules are non-negotiable:
-1.  **Frozen State**: Sites in the Vault must be "frozen". This means **NO `node_modules`**, no `dist` folders, and no `.git` metadata within the site folders.
-2.  **No Active Processes**: It is strictly forbidden to start preview servers, build processes, or any other active runtime directly from the Vault.
-3.  **One-Way Workflow**: To preview or modify a site, it **MUST** be "Unparked" (Retrieved) to the Factory (`athena-y/sites/`) first.
-4.  **Dehydration on Park**: When moving a site to the Vault (Parking), it must be automatically "dehydrated" (removal of all generated/dependency files).
-5.  **Factory as Workbench**: The Factory (`athena-y/sites/`) is the only place where hydration (`pnpm install`), previews, and edits occur.
-
 ## 🔄 Data Flow, Split-Save & Governance Modes
 - **Governance**: Sites operate in `dev-mode` (full bidirectional sync) or `client-mode` (developer creates style, client pushes texts).
 - **Style/Content Separation**: The system enforces clean separation.
@@ -68,7 +60,7 @@ The Vault (`../athena-vault-v8-1/`) is a **Cold Storage** environment. To ensure
 
 ## 📂 Detailed Project Directory Structure
 ```text
-/home/kareltestspecial/0-IT/3-DEV/myAgent/athena-y/
+/home/kareltestspecial/0-IT/3-DEV/myAgent/3.0-factory/
 ├── GEMINI.md                     # Master Context for the Factory (THIS FILE)
 ├── dock/                         # Visual Editor (Athena Dock) React App (Port 5002)
 │   ├── public/sites.json         # Central registry of all generated sites
