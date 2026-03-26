@@ -6,7 +6,7 @@
     "status": "Live",
     "github_url": "",
     "live_url": "https://athenasite.github.io/gentse-dakwerken-v4/",
-    "image_url": ""
+    "image_url": "showcase/gentse-dakwerken.jpg"
   },
   {
     "title": "Cloud Architects",
@@ -15,7 +15,7 @@
     "status": "Live",
     "github_url": "",
     "live_url": "https://athenasite.github.io/cloud-architects/",
-    "image_url": ""
+    "image_url": "showcase/cloud-architects.jpg"
   },
   {
     "title": "De Schaar",
@@ -23,8 +23,8 @@
     "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
     "status": "Live",
     "github_url": "",
-    "live_url": "https://athena-cms-factory.github.io/de-schaar-site/",
-    "image_url": ""
+    "live_url": "https://athenasite.github.io/de-schaar-site/",
+    "image_url": "showcase/de-schaar.jpg"
   },
   {
     "title": "Chocolade Shop",
@@ -33,7 +33,7 @@
     "status": "Live",
     "github_url": "",
     "live_url": "https://athenasite.github.io/chocolade-shop/",
-    "image_url": ""
+    "image_url": "showcase/chocolade-shop.jpg"
   },
   {
     "title": "Urban Soles",
@@ -42,7 +42,7 @@
     "status": "Live",
     "github_url": "",
     "live_url": "https://athenasite.github.io/urban-soles/",
-    "image_url": ""
+    "image_url": "showcase/urban-soles.jpg"
   },
   {
     "title": "Pure Relaxation",
@@ -51,6 +51,6 @@
     "status": "Live",
     "github_url": "",
     "live_url": "https://athenasite.github.io/pure-relaxation/",
-    "image_url": ""
+    "image_url": "showcase/pure-relaxation.jpg"
   }
 ]
