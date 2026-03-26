@@ -1,17 +1,17 @@
 [
   {
-    "title": "Alles voor u geregeld",
-    "description": "Van domeinnaam tot hosting en beveiliging. Ik neem de technische kant volledig uit handen, zodat u zich op uw bedrijf kunt richten.",
+    "title": "Geen maandelijkse kosten",
+    "description": "Je betaalt éénmalig. Geen hosting, geen abonnementen, geen verborgen kosten. Je website draait gratis — voor altijd.",
     "icon": "ShieldCheck"
   },
   {
-    "title": "Persoonlijk contact",
-    "description": "Geen ticketsystemen of wachtrijen. U heeft één vast aanspreekpunt voor al uw vragen en aanpassingen.",
+    "title": "Zelf content beheren",
+    "description": "Wijzig teksten, foto's en prijzen via Google Sheets of de visuele editor. Zo simpel als een spreadsheet invullen — geen technische kennis nodig.",
     "icon": "User"
   },
   {
-    "title": "Snel online",
-    "description": "Geen maandenlange trajecten. Door mijn efficiënte werkwijze staat uw professionele website binnen 2 weken online.",
+    "title": "Binnen 48 uur online",
+    "description": "Geen maandenlange trajecten. Door mijn eigen platform lever ik professionele websites in dagen, niet weken.",
     "icon": "Zap"
   }
 ]
