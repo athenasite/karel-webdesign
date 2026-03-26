@@ -1,25 +1,25 @@
 [
   {
-    "title": "Basis Website",
-    "price": 499,
-    "description": "Een professionele online aanwezigheid met de nodige functionaliteit voor kleine bedrijven.",
-    "features_list": "Responsive Design, Contactformulier, SEO-optimalisatie (basis), Integratie Social Media",
+    "title": "Starter",
+    "price": 750,
+    "description": "Snel online met een professionele one-page website. Ideaal voor startende zelfstandigen en freelancers.",
+    "features_list": "Responsive design (mobiel + desktop), Tot 5 secties (hero/diensten/contact/...), Google Sheets CMS — zelf content beheren, Gratis hosting (geen maandelijkse kosten), Basis SEO-setup, Handleiding in het Nederlands, Levertijd: 24-48 uur",
     "recommended": false,
     "order": 1
   },
   {
-    "title": "Standaard Website",
-    "price": 799,
-    "description": "Uitgebreide functionaliteit en maatwerkopties voor groeiende bedrijven.",
-    "features_list": "Alles van Basis, Content Management Systeem (CMS), Blog functionaliteit, Meer pagina's, Google Analytics integratie",
+    "title": "Professional",
+    "price": 1495,
+    "description": "Compleet & professioneel. De populairste keuze voor gevestigde KMO's, kappers, restaurants en aannemers.",
+    "features_list": "Alles uit Starter, Tot 10 secties met team/reviews/prijslijst/FAQ, Visuele editor — klik en wijzig zelf, Professionele stockfoto's, Contactformulier + WhatsApp button, Google Maps integratie, Social media koppeling, 2 revisierondes, Levertijd: 2-3 werkdagen",
     "recommended": true,
     "order": 2
   },
   {
-    "title": "Premium Website",
-    "price": 1299,
-    "description": "Complete oplossing met geavanceerde functies voor ambitieuze ondernemers.",
-    "features_list": "Alles van Standaard, E-commerce integratie, Online afsprakenplanner, Geavanceerde SEO, Prioriteit support",
+    "title": "Business",
+    "price": 2495,
+    "description": "Alles wat je nodig hebt. Voor winkels, webshops en bedrijven die online willen verkopen.",
+    "features_list": "Alles uit Professional, Onbeperkte secties, Productcatalogus met prijzen, Betalingen via Mollie (Bancontact/iDEAL/creditcard), Meertalig (NL/FR/EN), Google Analytics + cookie banner (GDPR), Custom domein setup, 30 dagen gratis support, 3 revisierondes, Levertijd: 3-5 werkdagen",
     "recommended": false,
     "order": 3
   }

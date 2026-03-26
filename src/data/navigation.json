@@ -1,16 +1,16 @@
 [
   {
-    "label": "Waarom ik?",
+    "label": "Waarom Karel?",
     "href": "#features",
     "order": 1
   },
   {
-    "label": "Diensten",
+    "label": "Pakketten",
     "href": "#services",
     "order": 2
   },
   {
-    "label": "Werk",
+    "label": "Showcase",
     "href": "#portfolio",
     "order": 3
   },

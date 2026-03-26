@@ -1,38 +1,56 @@
 [
   {
-    "title": "Kanban Pro Showcase",
-    "description": "Een architecturale showcase van full-stack vaardigheden, met een robuust Kanban-bord gebouwd met moderne technologieën: Java, Spring Boot en React.",
-    "tech_stack": "Java, Spring Boot, React, TypeScript, PostgreSQL, Docker",
-    "status": "Showcase",
-    "github_url": "https://github.com/KarelTestSpecial/kanban-pro",
-    "live_url": "",
-    "image_url": "kanban-pro.jpg"
-  },
-  {
-    "title": "Linux Environment AI Analyzer",
-    "description": "Geavanceerde tool die Linux-omgevingen analyseert en de Google Gemini API gebruikt om gepersonaliseerde inzichten en onderhoudstips te genereren.",
-    "tech_stack": "Python, Google Gemini API, Linux, Bash, GitHub Actions",
+    "title": "Gentse Dakwerken",
+    "description": "Complete bedrijfswebsite voor een dakwerkbedrijf in Gent. Met diensten, specialiteiten, reviews, teamoverzicht en contactformulier.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
     "status": "Live",
-    "github_url": "https://github.com/KarelTestSpecial/Linux-Partitie-Analyser",
-    "live_url": "",
-    "image_url": "linux-partitie-analyser.jpg"
+    "github_url": "",
+    "live_url": "https://athenasite.github.io/gentse-dakwerken-v4/",
+    "image_url": ""
   },
   {
-    "title": "Vegan BioTech Report",
-    "description": "Een geautomatiseerde nieuwsbrief en longread website die AI en GitHub Actions inzet voor continue dataverzameling en publicatie.",
-    "tech_stack": "Python, GitHub Actions, AI, Web Scraping, HTML/CSS",
+    "title": "Cloud Architects",
+    "description": "Professionele website voor een IT-consultancybureau. Expertise-overzicht, projecten, pakketten en contactsectie.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
     "status": "Live",
-    "github_url": "https://github.com/KarelTestSpecial/Vegan-BioTech-Report",
-    "live_url": "",
-    "image_url": "vegan-biotech-report.jpg"
+    "github_url": "",
+    "live_url": "https://athenasite.github.io/cloud-architects/",
+    "image_url": ""
   },
   {
-    "title": "NotebookLM Source Loader",
-    "description": "Chrome-extensie die het proces van het laden van bronnen in Google NotebookLM automatiseert voor snellere kennisanalyse.",
-    "tech_stack": "JavaScript, Chrome Extension API, CSS",
-    "status": "Beta",
-    "github_url": "https://github.com/KarelTestSpecial/notebooklm-source-loader",
-    "live_url": "",
-    "image_url": "notebooklm-source-uploader.jpg"
+    "title": "De Schaar",
+    "description": "Website voor een kapperszaak met team, volledige prijslijst, klantreviews en online bereikbaarheid.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
+    "status": "Live",
+    "github_url": "",
+    "live_url": "https://athena-cms-factory.github.io/de-schaar-site/",
+    "image_url": ""
+  },
+  {
+    "title": "Chocolade Shop",
+    "description": "Webshop-presentatie voor een Belgische chocolatier. Productcatalogus met prijzen, bestelknoppen en merkverhaal.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS, Mollie",
+    "status": "Live",
+    "github_url": "",
+    "live_url": "https://athenasite.github.io/chocolade-shop/",
+    "image_url": ""
+  },
+  {
+    "title": "Urban Soles",
+    "description": "E-commerce presentatie voor een schoenenwinkel. Uitgebreide productcatalogus met categorieën, prijzen en bestelflow.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
+    "status": "Live",
+    "github_url": "",
+    "live_url": "https://athenasite.github.io/urban-soles/",
+    "image_url": ""
+  },
+  {
+    "title": "Pure Relaxation",
+    "description": "Elegante website voor een wellness-centrum. Behandelingen, sfeerbeelden en online boekingsmogelijkheid.",
+    "tech_stack": "React, Tailwind CSS, Google Sheets CMS",
+    "status": "Live",
+    "github_url": "",
+    "live_url": "https://athenasite.github.io/pure-relaxation/",
+    "image_url": ""
   }
 ]
